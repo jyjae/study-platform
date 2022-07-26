@@ -1,0 +1,90 @@
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
+
+plugins {
+	id 'org.springframework.boot' version '2.7.2'
+	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+	//querydsl 추가
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// DB
+	runtimeOnly 'mysql:mysql-connector-java'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+	// Spring Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	//querydsl 추가
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+
+/*
+ * queryDSL 설정 추가
+ */
+
+def querydslDir = "$buildDir/generated/querydsl"
+//"$buildDir/generated/querydsl"
+// querydsl QClass 파일 생성 위치를 지정
+
+tasks.withType(JavaCompile) {
+	options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
+}
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+	main.java.srcDir querydslDir
+}
+
+compileQuerydsl{
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
+}
