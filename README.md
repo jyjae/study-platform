@@ -4,6 +4,7 @@
 ## 1. 개발환경
 | NAME | VERSION | DESCRIPTION |
 | ------ | ----------- | ----------- |
+| Intellij   | 상관 없음  | Ide      |
 | Java   | 11  | 자바 버전      |
 | Gradle   | 7.5    | gradle 버전      |
 | Spring Boot   | 2.7.2                 | 스프링 부트 버전       |
