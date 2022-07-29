@@ -12,7 +12,7 @@ import java.util.List;
 public class CareerCreateDto {
     private int month;
 
-    private String techName;
+    private Long techId;
 
     public static Career toEntity(int month, TechStack techStack) {
         return new Career(month, techStack);

@@ -1,6 +1,5 @@
 package com.example.studyplatform.service.user;
 
-
 import com.example.studyplatform.domain.career.Career;
 import com.example.studyplatform.domain.career.CareerRepository;
 import com.example.studyplatform.domain.techStack.TechStack;
@@ -31,7 +30,7 @@ public class UserService {
 
     @Transactional
     public void signUp(SignUpRequest req) {
-        // 1. 중복 검사
+        // 1. 이름, 닉네임 중복 검사
         validateSignUp(req);
 
         // 2. 경력 저장
@@ -45,23 +44,27 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(req.getPassword());
 
         // 5. 유저 저장
-        userRepository.save(User.builder().username(req.getUsername())
+        User user = User.builder().username(req.getUsername())
                 .nickname(req.getNickname())
                 .password(encodedPassword)
                 .email(req.getEmail())
-                .profileImg(req.getProfileImg()).build());
+                .profileImg(req.getProfileImg()).build();
+
+        // 6. 관심 스택 및 경력 유저 정보에 추가
+        techStacks.forEach(user::addTechStack);
+        careers.forEach(user::addCareer);
     }
 
+    // CareerCreateDto를 순회하여 List<Career>로 변환 후 반환해주는 메소드
     private List<Career> toCareerList(SignUpRequest req) {
         return req.getCareers().stream().map(dto ->
-                CareerCreateDto.toEntity(dto.getMonth(), techStackRepository.findByTechNameAndStatusTrue(dto.getTechName())
+                CareerCreateDto.toEntity(dto.getMonth(), techStackRepository.findByIdAndStatusTrue(dto.getTechId())
                         .orElseThrow(TechStackNotFoundException::new))).collect(Collectors.toList());
     }
 
-    // findByTechandStatus
     private List<TechStack> toTechStackList(SignUpRequest req) {
-        return req.getTechNames().stream().map(i ->
-                        techStackRepository.findByTechNameAndStatusTrue(i).orElseThrow(TechStackNotFoundException::new))
+        return req.getTechIds().stream().map(i ->
+                        techStackRepository.findByIdAndStatusTrue(i).orElseThrow(TechStackNotFoundException::new))
                 .collect(Collectors.toList());
     }
 

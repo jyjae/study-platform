@@ -22,5 +22,5 @@ public class SignUpRequest {
     private List<CareerCreateDto> careers;
 
     // ID로 받아오는게 더 성능이 좋음
-    private List<String> techNames;
+    private List<Long> techIds;
 }
