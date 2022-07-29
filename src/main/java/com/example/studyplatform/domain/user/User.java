@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -36,11 +37,12 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    // 관계 매핑 시 초기화 해주는 것이 좋음
     @OneToMany(fetch = FetchType.LAZY)
-    private List<TechStack> techStacks;
+    private List<TechStack> techStacks = new ArrayList<>();
 
     @OneToMany(fetch=FetchType.LAZY)
-    private List<Career> careers;
+    private List<Career> careers = new ArrayList<>();
 
     public String getRole(){
         return this.role.getKey();
@@ -58,16 +60,14 @@ public class User extends BaseTimeEntity {
         this.techStacks.add(techStack);
     }
 
+    // List 형식 매개변수 빼야됨 -> add 함수 이용
     @Builder
-    public User(String username, String nickname, String email, String password, String profileImg, List<TechStack> techStacks,
-                List<Career> careers) {
+    public User(String username, String nickname, String email, String password, String profileImg) {
         this.username = username;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.profileImg = profileImg;
-        this.techStacks = techStacks;
-        this.careers = careers;
         this.role = Role.USER;
         this.status = Status.ACTIVE;
     }
