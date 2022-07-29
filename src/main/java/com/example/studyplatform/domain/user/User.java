@@ -41,7 +41,7 @@ public class User extends BaseTimeEntity {
     @OneToMany(fetch = FetchType.LAZY)
     private List<TechStack> techStacks = new ArrayList<>();
 
-    @OneToMany(fetch=FetchType.LAZY)
+    @OneToMany(fetch=FetchType.LAZY, orphanRemoval = true)
     private List<Career> careers = new ArrayList<>();
 
     public String getRole(){

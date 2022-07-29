@@ -1,5 +1,6 @@
 package com.example.studyplatform.service.user;
 
+import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.career.Career;
 import com.example.studyplatform.domain.career.CareerRepository;
 import com.example.studyplatform.domain.techStack.TechStack;
@@ -43,7 +44,7 @@ public class UserService {
         // 4. 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(req.getPassword());
 
-        // 5. 유저 저장
+        // 5. 유저 생성
         User user = User.builder().username(req.getUsername())
                 .nickname(req.getNickname())
                 .password(encodedPassword)
@@ -53,18 +54,21 @@ public class UserService {
         // 6. 관심 스택 및 경력 유저 정보에 추가
         techStacks.forEach(user::addTechStack);
         careers.forEach(user::addCareer);
+
+        // 7. 유저 저장
+        userRepository.save(user);
     }
 
     // CareerCreateDto를 순회하여 List<Career>로 변환 후 반환해주는 메소드
     private List<Career> toCareerList(SignUpRequest req) {
         return req.getCareers().stream().map(dto ->
-                CareerCreateDto.toEntity(dto.getMonth(), techStackRepository.findByIdAndStatusTrue(dto.getTechId())
+                CareerCreateDto.toEntity(dto.getMonth(), techStackRepository.findByIdAndStatus(dto.getTechId(), Status.ACTIVE)
                         .orElseThrow(TechStackNotFoundException::new))).collect(Collectors.toList());
     }
 
     private List<TechStack> toTechStackList(SignUpRequest req) {
         return req.getTechIds().stream().map(i ->
-                        techStackRepository.findByIdAndStatusTrue(i).orElseThrow(TechStackNotFoundException::new))
+                        techStackRepository.findByIdAndStatus(i, Status.ACTIVE).orElseThrow(TechStackNotFoundException::new))
                 .collect(Collectors.toList());
     }
 

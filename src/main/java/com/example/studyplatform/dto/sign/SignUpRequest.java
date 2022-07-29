@@ -3,10 +3,12 @@ package com.example.studyplatform.dto.sign;
 import com.example.studyplatform.dto.career.CareerCreateDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class SignUpRequest {
     private String username;

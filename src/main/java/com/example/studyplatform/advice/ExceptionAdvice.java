@@ -18,13 +18,13 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(UserEmailAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public Response userEmailAlreadyExistsException(UserEmailAlreadyExistsException e) {
         return Response.failure(USER_EMAIL_ALREADY_EXISTS.getCode(), USER_EMAIL_ALREADY_EXISTS.getMessage());
     }
 
     @ExceptionHandler(UserNicknameAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public Response userNicknameAlreadyExistsException(UserNicknameAlreadyExistsException e) {
         return Response.failure(USER_NICKNAME_ALREADY_EXISTS.getCode(), USER_NICKNAME_ALREADY_EXISTS.getMessage());
     }
