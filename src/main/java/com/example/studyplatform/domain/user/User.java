@@ -8,15 +8,21 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class User extends BaseTimeEntity {
+public class User extends BaseTimeEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,8 +37,12 @@ public class User extends BaseTimeEntity {
 
     private String profileImg;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "User_Roles",
+            joinColumns=@JoinColumn(name = "user_id")
+    )
+    private List<String> roles = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -44,9 +54,11 @@ public class User extends BaseTimeEntity {
     @OneToMany(fetch=FetchType.LAZY, orphanRemoval = true)
     private List<Career> careers = new ArrayList<>();
 
-    public String getRole(){
-        return this.role.getKey();
-    }
+//    public List<String> getRole(){
+//        return this.roles.stream()
+//                .map(Role::getKey)
+//                .collect(Collectors.toList());
+//    }
 
     public void inActive() {
         this.status = Status.INACTIVE;
@@ -62,13 +74,49 @@ public class User extends BaseTimeEntity {
 
     // List 형식 매개변수 빼야됨 -> add 함수 이용
     @Builder
-    public User(String username, String nickname, String email, String password, String profileImg) {
+    public User(
+            String username,
+            String nickname,
+            String email,
+            String password,
+            String profileImg,
+            List<String> roles
+    ) {
         this.username = username;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.profileImg = profileImg;
-        this.role = Role.USER;
         this.status = Status.ACTIVE;
+        this.roles = roles;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+
 }

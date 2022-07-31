@@ -27,6 +27,7 @@ out/
 !**/src/test/**/out/
 application-prod.yml
 application-dev.yml
+**/src/main/**/config/secret/
 
 ### NetBeans ###
 /nbproject/private/
