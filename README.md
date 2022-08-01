@@ -14,4 +14,4 @@
 | Ec2   | ...            | Aws ec2       |
 | Nginx   | ...            | 웹 서버      |
 | Rds   | ...            | Aws rds       |
-| S3   | ...            | Aws s3       |
+| S3   | ...            | Aws s3       |    
