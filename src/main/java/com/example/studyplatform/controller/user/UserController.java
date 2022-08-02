@@ -22,6 +22,7 @@ public class UserController {
         userService.signUp(req);
         return Response.success();
     }
+    안녕
 
     @PostMapping("/api/login")
     public Response login(@RequestBody LoginRequest req) {
