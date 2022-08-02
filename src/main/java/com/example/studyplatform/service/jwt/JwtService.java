@@ -1,6 +1,6 @@
 package com.example.studyplatform.service.jwt;
 
-import com.example.studyplatform.config.secret.Secret;
+import com.example.studyplatform.config.Secret;
 import com.example.studyplatform.exception.JwtInvalidException;
 import com.example.studyplatform.exception.JwtNotFoundException;
 import io.jsonwebtoken.Claims;
@@ -28,10 +28,10 @@ public class JwtService {
     public String createJwt(Long userIdx) {
         Date now = new Date();
         return Jwts.builder()
-                .setHeaderParam("type","jwt")
+                .setHeaderParam("type", "jwt")
                 .claim("userIdx", userIdx)
                 .setIssuedAt(now)
-                .setExpiration(new Date(System.currentTimeMillis()+1*(1000*60*60*24*365)))
+                .setExpiration(new Date(System.currentTimeMillis() + 1 * (1000 * 60 * 60 * 24 * 365)))
                 .signWith(SignatureAlgorithm.HS256, Secret.ACCESS_JWT_SECRET_KEY)
                 .compact();
     }
@@ -40,7 +40,7 @@ public class JwtService {
     Header에서 X-ACCESS-TOKEN 으로 JWT 추출
     @return String
      */
-    public Optional<String> getJwt(){
+    public Optional<String> getJwt() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         return Optional.ofNullable(request.getHeader("X-ACCESS-TOKEN"));
     }
@@ -53,13 +53,13 @@ public class JwtService {
     public String getUserIdx() throws RuntimeException {
         //1. JWT 추출
         String accessToken = getJwt().orElseThrow(JwtNotFoundException::new);
-        if(accessToken.length() == 0){
+        if (accessToken.length() == 0) {
             throw new JwtNotFoundException();
         }
 
         // 2. JWT parsing
         Jws<Claims> claims;
-        try{
+        try {
             claims = Jwts.parser()
                     .setSigningKey(Secret.ACCESS_JWT_SECRET_KEY)
                     .parseClaimsJws(accessToken);
@@ -68,7 +68,7 @@ public class JwtService {
         }
 
         // 3. userIdx 추출
-        return claims.getBody().get("userIdx",String.class);
+        return claims.getBody().get("userIdx", String.class);
     }
 
     public boolean validateToken(String jwtToken) {
@@ -82,12 +82,12 @@ public class JwtService {
 
     // 토큰에서 회원 정보 추출
     public Long getUserIdx(String token) {
-        return Jwts.parser().setSigningKey(Secret.ACCESS_JWT_SECRET_KEY).parseClaimsJws(token).getBody().get("userInfo",Long.class);
+        return Jwts.parser().setSigningKey(Secret.ACCESS_JWT_SECRET_KEY).parseClaimsJws(token).getBody().get("userInfo", Long.class);
     }
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserIdx(token)+"");
+        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserIdx(token) + "");
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

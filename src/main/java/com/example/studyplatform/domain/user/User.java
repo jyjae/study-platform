@@ -3,6 +3,8 @@ package com.example.studyplatform.domain.user;
 import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.career.Career;
+import com.example.studyplatform.domain.studyNotice.StudyNotice;
+import com.example.studyplatform.domain.studyUser.StudyUser;
 import com.example.studyplatform.domain.techStack.TechStack;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,6 +54,12 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     @OneToMany(fetch=FetchType.LAZY, orphanRemoval = true)
     private List<Career> careers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<StudyNotice> studyNotices = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<StudyUser> studyUsers = new ArrayList<>();
 
 //    public List<String> getRole(){
 //        return this.roles.stream()
