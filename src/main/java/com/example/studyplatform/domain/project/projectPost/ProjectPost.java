@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -21,32 +22,32 @@ public class ProjectPost extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    String title;
+    private String title;
 
-    String content;
+    private String content;
 
     // to do : 광역 시군구 Open API로 받을지?
 
-    Status status;
+    private Status status;
 
-    Boolean isMike;
+    private Boolean isMike;
 
-    Boolean isCamera;
+    private Boolean isCamera;
 
-    Boolean isDeadLine;
+    private Boolean isFinish;
 
-    Boolean isOnline;
+    private Boolean isOnline;
 
-    LocalDateTime recruitStartedAt;
+    private LocalDateTime recruitStartedAt;
 
-    LocalDateTime recruitEndedAt;
+    private LocalDateTime recruitEndedAt;
 
-    LocalDateTime projectStartedAt;
+    private LocalDateTime projectStartedAt;
 
-    LocalDateTime projectEndedAt;
+    private LocalDateTime projectEndedAt;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    List<ProjectOrganization> organizations;
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<ProjectOrganization> organizations = new ArrayList<>();
 
     public void addOrganization(ProjectOrganization organization) {
         this.organizations.add(organization);
@@ -58,19 +59,19 @@ public class ProjectPost extends BaseTimeEntity {
 
     @Builder
     public ProjectPost(String title, String content, Boolean isCamera, Boolean isMike,
-                       Boolean isDeadLine, Boolean isOnline, LocalDateTime recruitStartedAt,
+                       Boolean isOnline, LocalDateTime recruitStartedAt,
                        LocalDateTime recruitEndedAt, LocalDateTime projectStartedAt, LocalDateTime projectEndedAt) {
         this.title = title;
         this.content = content;
         this.isCamera = isCamera;
         this.isMike = isMike;
-        this.isDeadLine = isDeadLine;
         this.isOnline = isOnline;
         this.recruitStartedAt = recruitStartedAt;
         this.recruitEndedAt = recruitEndedAt;
         this.projectStartedAt = projectStartedAt;
         this.projectEndedAt = projectEndedAt;
         this.status = Status.ACTIVE;
+        this.isFinish = false;
     }
 }
 

@@ -43,7 +43,19 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(ProjectAccommodateZeroException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Response userNotFoundException(ProjectAccommodateZeroException e) {
+    public Response projectAccommodateZeroException(ProjectAccommodateZeroException e) {
         return Response.failure(PROJECT_ACCOMMODATE_ZERO.getCode(), PROJECT_ACCOMMODATE_ZERO.getMessage());
+    }
+
+    @ExceptionHandler(ProjectPostNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response projectPostNotFoundException(ProjectPostNotFoundException e) {
+        return Response.failure(PROJECT_POST_NOT_FOUND.getCode(), PROJECT_POST_NOT_FOUND.getMessage());
+    }
+
+    @ExceptionHandler(ProjectOrganizationNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response projectOrganizationNotFoundException(ProjectOrganizationNotFoundException e) {
+        return Response.failure(PROJECT_ORGANIZATION_NOT_FOUND.getCode(), PROJECT_ORGANIZATION_NOT_FOUND.getMessage());
     }
 }
