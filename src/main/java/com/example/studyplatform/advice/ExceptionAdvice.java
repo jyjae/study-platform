@@ -40,4 +40,10 @@ public class ExceptionAdvice {
     public Response userNotFoundException(UserNotFoundException e) {
         return Response.failure(USER_NOT_FOUND.getCode(), USER_NOT_FOUND.getMessage());
     }
+
+    @ExceptionHandler(ProjectAccommodateZeroException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response userNotFoundException(ProjectAccommodateZeroException e) {
+        return Response.failure(PROJECT_ACCOMMODATE_ZERO.getCode(), PROJECT_ACCOMMODATE_ZERO.getMessage());
+    }
 }
