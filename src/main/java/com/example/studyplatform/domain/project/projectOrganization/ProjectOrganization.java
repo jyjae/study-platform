@@ -3,7 +3,7 @@ package com.example.studyplatform.domain.project.projectOrganization;
 import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.techStack.TechStack;
-import com.example.studyplatform.exception.ProjectAccommodateZeroException;
+import com.example.studyplatform.exception.ProjectOrganizationDecreaseZeroException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,25 +24,46 @@ public class ProjectOrganization extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     private TechStack techStack;
 
-    Boolean isDeadLine;
+    // 모집 마감 유무
+    private Boolean isFinish;
 
-    int personnel;
+    private int personnel;
 
-    Status status;
+    @Enumerated(EnumType.STRING)
+    private CareerStatus careerStatus;
 
-    public void accommodate() {
+    private Status status;
+
+    public void finished() {
+        this.isFinish = true;
+    }
+
+    public void unFinished() {
+        this.isFinish = false;
+    }
+
+    public void increase() {
+        this.personnel++;
+        unFinished();
+    }
+
+    public void decrease() {
         if(this.personnel > 0){
             this.personnel--;
+
+            if(this.personnel == 0)
+                finished();
         }else{
-            throw new ProjectAccommodateZeroException();
+            throw new ProjectOrganizationDecreaseZeroException();
         }
     }
 
     @Builder
-    public ProjectOrganization(TechStack techStack, Boolean isDeadLine, int personnel) {
+    public ProjectOrganization(TechStack techStack, CareerStatus careerStatus, int personnel) {
         this.techStack = techStack;
-        this.isDeadLine = isDeadLine;
         this.personnel = personnel;
+        this.careerStatus = careerStatus;
+        this.isFinish = false;
         this.status = Status.ACTIVE;
     }
 }

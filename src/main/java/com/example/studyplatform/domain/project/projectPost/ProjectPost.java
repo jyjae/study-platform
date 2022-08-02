@@ -3,6 +3,7 @@ package com.example.studyplatform.domain.project.projectPost;
 import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.project.projectOrganization.ProjectOrganization;
+import com.example.studyplatform.domain.project.projectResume.ProjectResume;
 import lombok.AccessLevel;
 
 import lombok.Builder;
@@ -48,6 +49,20 @@ public class ProjectPost extends BaseTimeEntity {
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ProjectOrganization> organizations = new ArrayList<>();
+
+    // 확정된 신청서
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<ProjectResume> projectResumes = new ArrayList<>();
+
+    // 신청서 추가
+    public void addProjectResume(ProjectResume projectResume) {
+        this.projectResumes.add(projectResume);
+    }
+
+    // 신청서 삭제
+    public void deleteProjectResume(ProjectResume projectResume) {
+        this.projectResumes.remove(projectResume);
+    }
 
     public void addOrganization(ProjectOrganization organization) {
         this.organizations.add(organization);

@@ -41,10 +41,10 @@ public class ExceptionAdvice {
         return Response.failure(USER_NOT_FOUND.getCode(), USER_NOT_FOUND.getMessage());
     }
 
-    @ExceptionHandler(ProjectAccommodateZeroException.class)
+    @ExceptionHandler(ProjectOrganizationDecreaseZeroException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Response projectAccommodateZeroException(ProjectAccommodateZeroException e) {
-        return Response.failure(PROJECT_ACCOMMODATE_ZERO.getCode(), PROJECT_ACCOMMODATE_ZERO.getMessage());
+    public Response projectOrganizationDecreaseZeroException(ProjectOrganizationDecreaseZeroException e) {
+        return Response.failure(PROJECT_ORGANIZATION_DECREASE_ZERO.getCode(), PROJECT_ORGANIZATION_DECREASE_ZERO.getMessage());
     }
 
     @ExceptionHandler(ProjectPostNotFoundException.class)
