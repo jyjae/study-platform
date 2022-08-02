@@ -70,7 +70,7 @@ public class UserService {
 
     public LoginResponse login(LoginRequest req) {
         // 1. 유저 이메일 유효성 검사
-        User user = userRepository.findByEmailAndStatus(req.getEmail(), Status.ACTIVE);
+        User user = userRepository.findByEmailAndStatus(req.getEmail(), Status.ACTIVE).orElseThrow(UserNotFoundException::new);
         validateEmail(user);
 
         // 2. 유저 비밀번호 유효성 검사

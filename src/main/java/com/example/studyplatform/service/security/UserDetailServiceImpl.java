@@ -3,6 +3,7 @@ package com.example.studyplatform.service.security;
 import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.user.User;
 import com.example.studyplatform.domain.user.UserRepository;
+import com.example.studyplatform.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +17,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByIdAndStatus(Long.parseLong(username), Status.ACTIVE);
+        User user = userRepository.findByIdAndStatus(Long.parseLong(username), Status.ACTIVE).orElseThrow(UserNotFoundException::new);
         if(user == null) {
             throw new UsernameNotFoundException(username);
         }
