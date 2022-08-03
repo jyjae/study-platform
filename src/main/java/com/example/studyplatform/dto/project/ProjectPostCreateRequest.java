@@ -1,6 +1,7 @@
 package com.example.studyplatform.dto.project;
 
 import com.example.studyplatform.domain.project.projectPost.ProjectPost;
+import com.example.studyplatform.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectPostCreateRequest {
+
     private String title;
 
     private String content;
@@ -34,8 +36,10 @@ public class ProjectPostCreateRequest {
 
     private List<ProjectOrganizationCreateDto> organizations;
 
-    public static ProjectPost toEntity(ProjectPostCreateRequest req) {
-        return ProjectPost.builder().title(req.title)
+    public static ProjectPost toEntity(ProjectPostCreateRequest req, User user) {
+        return ProjectPost.builder()
+                .user(user)
+                .title(req.title)
                 .content(req.content)
                 .isCamera(req.isCamera)
                 .isMike(req.isMike)

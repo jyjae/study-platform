@@ -4,6 +4,9 @@ import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.project.projectOrganization.ProjectOrganization;
 import com.example.studyplatform.domain.project.projectResume.ProjectResume;
+import com.example.studyplatform.domain.user.User;
+import com.example.studyplatform.dto.project.ProjectPostUpdateRequest;
+import com.example.studyplatform.exception.ProjectOrganizationNotFoundException;
 import lombok.AccessLevel;
 
 import lombok.Builder;
@@ -27,6 +30,9 @@ public class ProjectPost extends BaseTimeEntity {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Type(type="uuid-char")
     private UUID id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     private String title;
 
@@ -59,6 +65,23 @@ public class ProjectPost extends BaseTimeEntity {
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ProjectResume> projectResumes = new ArrayList<>();
 
+    public void update(ProjectPostUpdateRequest req) {
+        this.title = req.getTitle();
+        this.content = req.getContent();
+        this.isMike = req.getIsMike();
+        this.isCamera = req.getIsCamera();
+        this.isFinish = req.getIsFinish();
+        this.isOnline = req.getIsOnline();
+        this.recruitStartedAt = req.getRecruitStartedAt();
+        this.recruitEndedAt = req.getRecruitEndedAt();
+        this.projectEndedAt = req.getProjectEndedAt();
+        this.projectStartedAt = req.getProjectStartedAt();
+    }
+
+    public void inActive() {
+        this.status = Status.INACTIVE;
+    }
+
     // 신청서 추가
     public void addProjectResume(ProjectResume projectResume) {
         this.projectResumes.add(projectResume);
@@ -74,13 +97,18 @@ public class ProjectPost extends BaseTimeEntity {
     }
 
     public void deleteOrganization(ProjectOrganization organization) {
-        this.organizations.remove(organization);
+        if (this.organizations.contains(organization)) {
+            this.organizations.remove(organization);
+        }else{
+            throw new ProjectOrganizationNotFoundException();
+        }
     }
 
     @Builder
-    public ProjectPost(String title, String content, Boolean isCamera, Boolean isMike,
+    public ProjectPost(User user, String title, String content, Boolean isCamera, Boolean isMike,
                        Boolean isOnline, LocalDateTime recruitStartedAt,
                        LocalDateTime recruitEndedAt, LocalDateTime projectStartedAt, LocalDateTime projectEndedAt) {
+        this.user = user;
         this.title = title;
         this.content = content;
         this.isCamera = isCamera;
