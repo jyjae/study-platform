@@ -11,6 +11,25 @@ import static com.example.studyplatform.advice.ErrorCode.*;
 
 @RestControllerAdvice
 public class ExceptionAdvice {
+    @ExceptionHandler(StudyApplyNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response studyApplyNotFoundException(StudyApplyNotFoundException e) {
+        return Response.failure(STUDY_APPLY_NOT_FOUND.getCode(), STUDY_APPLY_NOT_FOUND.getMessage());
+    }
+
+
+    @ExceptionHandler(StudyTechStackNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response studyTechStackNotFoundException(StudyTechStackNotFoundException e) {
+        return Response.failure(STUDY_TECH_STACK_NOT_FOUND.getCode(), STUDY_TECH_STACK_NOT_FOUND.getMessage());
+    }
+
+    @ExceptionHandler(StudyBoardNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response studyBoardNotFoundException(StudyBoardNotFoundException e) {
+        return Response.failure(STUDY_BOARD_NOT_FOUND.getCode(), STUDY_BOARD_NOT_FOUND.getMessage());
+    }
+
     @ExceptionHandler(TechStackNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Response techStackNotFoundException(TechStackNotFoundException e) {

@@ -1,6 +1,6 @@
 package com.example.studyplatform.service.jwt;
 
-import com.example.studyplatform.config.Secret;
+import com.example.studyplatform.config.secret.Secret;
 import com.example.studyplatform.exception.JwtInvalidException;
 import com.example.studyplatform.exception.JwtNotFoundException;
 import io.jsonwebtoken.Claims;
@@ -82,7 +82,7 @@ public class JwtService {
 
     // 토큰에서 회원 정보 추출
     public Long getUserIdx(String token) {
-        return Jwts.parser().setSigningKey(Secret.ACCESS_JWT_SECRET_KEY).parseClaimsJws(token).getBody().get("userInfo", Long.class);
+        return Jwts.parser().setSigningKey(Secret.ACCESS_JWT_SECRET_KEY).parseClaimsJws(token).getBody().get("userIdx", Long.class);
     }
 
     // JWT 토큰에서 인증 정보 조회

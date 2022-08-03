@@ -2,15 +2,15 @@ package com.example.studyplatform.domain.techStack;
 
 import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.BaseTimeEntity;
+import com.example.studyplatform.domain.studyTechStack.StudyTechStack;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,6 +27,10 @@ public class TechStack extends BaseTimeEntity {
     private Stack stack;
 
     private Status status;
+
+    // 스터디 게시글 기술 스택
+    @OneToMany(mappedBy = "techStack", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<StudyTechStack> studyTechStacks = new ArrayList<>();
 
     public void inActive() {
         this.status = Status.INACTIVE;
