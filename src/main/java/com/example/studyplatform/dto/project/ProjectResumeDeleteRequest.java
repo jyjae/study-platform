@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectResumeDeleteRequest {
-    private Long projectPostId;
+    private UUID projectPostId;
     private Long resumeId;
 }

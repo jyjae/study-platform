@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @RequestMapping("/api/study-boards")
 @RestController
@@ -34,7 +36,7 @@ public class StudyBoardController {
 
     @PutMapping("/{id}")
     Response deleteStudyBoard(
-            @PathVariable("id") Long studyBoardId,
+            @PathVariable("id") UUID studyBoardId,
             @AuthenticationPrincipal User user
     ) {
         studyBoardService.deleteStudyBoard(studyBoardId, user);

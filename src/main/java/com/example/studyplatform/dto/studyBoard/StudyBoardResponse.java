@@ -8,12 +8,13 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudyBoardResponse {
-    private Long studyBoardId;
+    private UUID studyBoardId;
     private Long userId;
     private String nickname;
     private String title;
