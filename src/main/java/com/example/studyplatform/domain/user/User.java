@@ -3,6 +3,7 @@ package com.example.studyplatform.domain.user;
 import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.career.Career;
+import com.example.studyplatform.domain.studyBoard.StudyBoard;
 import com.example.studyplatform.domain.studyNotice.StudyNotice;
 import com.example.studyplatform.domain.studyUser.StudyUser;
 import com.example.studyplatform.domain.techStack.TechStack;
@@ -60,6 +61,9 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StudyUser> studyUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<StudyBoard> studyBoards = new ArrayList<>();
 
 //    public List<String> getRole(){
 //        return this.roles.stream()
