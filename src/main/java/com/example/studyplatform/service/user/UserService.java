@@ -40,17 +40,10 @@ public class UserService {
         // 1. 이름, 닉네임 중복 검사
         validateSignUp(req);
 
-        // 2. 경력 저장
-        List<Career> careers = toCareerList(req);
-        careerRepository.saveAll(careers);
-
-        // 3. 관심 스택 불러오기
-        List<TechStack> techStacks = toTechStackList(req);
-
-        // 4. 비밀번호 암호화
+        // 2. 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(req.getPassword());
 
-        // 5. 유저 생성
+        // 3. 유저 생성
         User user = User.builder().username(req.getUsername())
                 .nickname(req.getNickname())
                 .password(encodedPassword)
@@ -58,17 +51,26 @@ public class UserService {
                 .profileImg(req.getProfileImg())
                 .roles(Collections.singletonList("ROLE_USER")).build();
 
-        // 6. 관심 스택 및 경력 유저 정보에 추가
-        techStacks.forEach(user::addTechStack);
-        careers.forEach(user::addCareer);
+        // 4. 경력 정보 있을 시 데이터 추가
+        if(!req.getCareers().isEmpty()){
+            List<Career> careers = toCareerList(req);
+            careerRepository.saveAll(careers);
+            careers.forEach(user::addCareer);
+        }
 
-        // 7. 유저 저장
+        // 5. 스택 정보 있을 시 데이터 추가
+        if (!req.getTechIds().isEmpty()) {
+            List<TechStack> techStacks = toTechStackList(req);
+            techStacks.forEach(user::addTechStack);
+        }
+
+        // 6. 유저 저장
         userRepository.save(user);
     }
 
     public LoginResponse login(LoginRequest req) {
         // 1. 유저 이메일 유효성 검사
-        User user = userRepository.findByEmailAndStatus(req.getEmail(), Status.ACTIVE);
+        User user = userRepository.findByEmailAndStatus(req.getEmail(), Status.ACTIVE).orElseThrow(UserNotFoundException::new);
         validateEmail(user);
 
         // 2. 유저 비밀번호 유효성 검사
