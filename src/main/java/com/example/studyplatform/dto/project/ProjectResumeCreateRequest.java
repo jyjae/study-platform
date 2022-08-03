@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectResumeCreateRequest {
-    private Long userId;
     private Long organizationId;
 
     public static ProjectResume toEntity(User user, ProjectOrganization organization) {

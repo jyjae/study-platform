@@ -11,5 +11,4 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ProjectResumeDeleteRequest {
     private UUID projectPostId;
-    private Long resumeId;
 }
