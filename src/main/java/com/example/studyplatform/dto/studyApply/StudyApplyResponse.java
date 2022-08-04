@@ -11,12 +11,12 @@ import java.util.UUID;
 @AllArgsConstructor
 public class StudyApplyResponse {
     private Long studyApplyId;
-    private UUID studyBoardId;
+    private Long studyBoardId;
     private String applyStatus;
 
     public static StudyApplyResponse of(
             Long studyApplyId,
-            UUID studyBoardId,
+            Long studyBoardId,
             String applyStatus
     ) {
         return new StudyApplyResponse(

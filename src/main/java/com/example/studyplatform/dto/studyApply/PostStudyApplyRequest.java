@@ -10,5 +10,5 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostStudyApplyRequest {
-    private UUID studyBoardId;
+    private Long studyBoardId;
 }

@@ -73,7 +73,7 @@ public class StudyBoardService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void deleteStudyBoard(UUID studyBoardId, User user) {
+    public void deleteStudyBoard(Long studyBoardId, User user) {
         // 1. 기존 스터디 게시글 가져오기 및 status 변경
         StudyBoard modifyStudyBoard = studyBoardRepository
                 .save(getStudyBoardByIdAndUser(studyBoardId, user).inActive());
@@ -88,7 +88,7 @@ public class StudyBoardService {
 
     }
 
-    private List<StudyTechStack> getStudyTechStack(UUID studyBoardId) {
+    private List<StudyTechStack> getStudyTechStack(Long studyBoardId) {
         return studyTechStackRepository.findAllByStudyBoardIdAndStatus(studyBoardId, Status.ACTIVE);
     }
 
@@ -131,7 +131,7 @@ public class StudyBoardService {
                 .collect(Collectors.toList());
     }
 
-    private StudyBoard getStudyBoardByIdAndUser(UUID id, User user) {
+    private StudyBoard getStudyBoardByIdAndUser(Long id, User user) {
         return studyBoardRepository
                 .findByIdAndUserIdAndStatus(id, user.getId(), Status.ACTIVE)
                 .orElseThrow(StudyBoardNotFoundException::new);

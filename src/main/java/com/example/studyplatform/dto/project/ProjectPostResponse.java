@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectPostResponse {
-    private UUID id;
+    private Long id;
 
     private Long userId;
 

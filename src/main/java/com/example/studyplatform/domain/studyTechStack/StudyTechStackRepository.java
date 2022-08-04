@@ -10,5 +10,5 @@ import java.util.UUID;
 public interface StudyTechStackRepository extends JpaRepository<StudyTechStack, Long> {
     Optional<StudyTechStack> findByIdAndStatus(Long i, Status active);
 
-    List<StudyTechStack> findAllByStudyBoardIdAndStatus(UUID studyBoardId, Status active);
+    List<StudyTechStack> findAllByStudyBoardIdAndStatus(Long studyBoardId, Status active);
 }

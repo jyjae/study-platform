@@ -42,14 +42,14 @@ public class ProjectPostService {
         }
     }
 
-    public ProjectPostResponse read(UUID id){
+    public ProjectPostResponse read(Long id){
         ProjectPost projectPost = projectPostRepository.findById(id).orElseThrow(ProjectPostNotFoundException::new);
 
         return ProjectPostResponse.toDto(projectPost, createProjectOrganizationDto(projectPost));
     }
 
     @Transactional
-    public void update(UUID id, ProjectPostUpdateRequest req) {
+    public void update(Long id, ProjectPostUpdateRequest req) {
         ProjectPost projectPost = projectPostRepository.findById(id).orElseThrow(ProjectPostNotFoundException::new);
 
         if (!req.getAddOrganizations().isEmpty()) {
@@ -70,7 +70,7 @@ public class ProjectPostService {
     }
 
     @Transactional
-    public void delete(UUID id) {
+    public void delete(Long id) {
         ProjectPost projectPost = projectPostRepository.findById(id).orElseThrow(ProjectPostNotFoundException::new);
         projectPost.inActive();
 

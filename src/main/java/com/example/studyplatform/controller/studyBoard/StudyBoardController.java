@@ -36,7 +36,7 @@ public class StudyBoardController {
 
     @PutMapping("/{id}")
     Response deleteStudyBoard(
-            @PathVariable("id") UUID studyBoardId,
+            @PathVariable("id") Long studyBoardId,
             @AuthenticationPrincipal User user
     ) {
         studyBoardService.deleteStudyBoard(studyBoardId, user);

@@ -63,7 +63,7 @@ public class StudyApplyService {
         studyApplyRepository.save(savedStudyApply.inActive());
     }
 
-    private StudyBoard getStudyBoard(UUID studyBoardId) {
+    private StudyBoard getStudyBoard(Long studyBoardId) {
         return studyBoardRepository.findByIdAndStatus(studyBoardId, Status.ACTIVE)
                 .orElseThrow(StudyBoardNotFoundException::new);
     }

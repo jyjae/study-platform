@@ -30,13 +30,13 @@ public class ProjectPostController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Response read(@PathVariable UUID id) {
+    public Response read(@PathVariable Long id) {
         return Response.success(projectPostService.read(id));
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Response delete(@PathVariable UUID id) {
+    public Response delete(@PathVariable Long id) {
         projectPostService.delete(id);
         return Response.success();
     }
@@ -44,7 +44,7 @@ public class ProjectPostController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Response update(
-            @PathVariable UUID id,
+            @PathVariable Long id,
             @RequestBody ProjectPostUpdateRequest req) {
         projectPostService.update(id, req);
         return Response.success();

@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudyBoardResponse {
-    private UUID studyBoardId;
+    private Long studyBoardId;
     private Long userId;
     private String nickname;
     private String title;
