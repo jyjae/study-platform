@@ -2,6 +2,7 @@ package com.example.studyplatform.domain.studyBoard;
 
 import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.BaseTimeEntity;
+import com.example.studyplatform.domain.board.Board;
 import com.example.studyplatform.domain.studyApply.StudyApply;
 import com.example.studyplatform.domain.studyTechStack.StudyTechStack;
 import com.example.studyplatform.domain.user.User;
@@ -21,41 +22,11 @@ import java.util.UUID;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DiscriminatorValue("STUDY")
 @Entity
-public class StudyBoard extends BaseTimeEntity {
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Type(type="uuid-char")
-    private UUID id;
-
-    private String title;
-
-    private String content;
+public class StudyBoard extends Board {
 
     private Integer userCnt;
-
-    private Boolean isOnline;
-
-    private Boolean isCamara;
-
-    private Boolean isMic;
-
-    private Boolean isDead;
-
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
-    private LocalDateTime recruitStartAt;
-
-    private LocalDateTime recruitEndAt;
-
-    private LocalDateTime startAt;
-
-    private LocalDateTime endAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
 
     @OneToMany(mappedBy = "studyBoard", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StudyTechStack> studyTechStacks = new ArrayList<>();
@@ -86,13 +57,13 @@ public class StudyBoard extends BaseTimeEntity {
         this.content = content;
         this.userCnt = userCnt;
         this.isOnline = isOnline;
-        this.isCamara = isCamara;
-        this.isMic = isMic;
-        this.isDead = isDead;
-        this.recruitStartAt = recruitStartAt;
-        this.recruitEndAt = recruitEndAt;
-        this.startAt = startAt;
-        this.endAt = endAt;
+        this.isCamera = isCamara;
+        this.isMike = isMic;
+        this.isFinish = isDead;
+        this.recruitStartedAt = recruitStartAt;
+        this.recruitEndedAt = recruitEndAt;
+        this.startedAt = startAt;
+        this.endedAt = endAt;
         this.user = user;
         this.status = Status.ACTIVE;
     }
@@ -118,9 +89,9 @@ public class StudyBoard extends BaseTimeEntity {
     @PrePersist
     public void prePersist() {
         this.isOnline = this.isOnline == null ? false : this.isOnline;
-        this.isCamara = this.isCamara == null ? false : this.isCamara;
-        this.isMic = this.isMic == null ? false : this.isMic;
-        this.isDead = this.isDead == null ? false : this.isDead;
+        this.isCamera = this.isCamera == null ? false : this.isCamera;
+        this.isMike = this.isMike == null ? false : this.isMike;
+        this.isFinish = this.isFinish == null ? false : this.isFinish;
     }
 
     public StudyBoard updateEntity(PutStudyBoardRequest req) {
@@ -128,13 +99,13 @@ public class StudyBoard extends BaseTimeEntity {
         if(req.getContent() != null) this.content = req.getContent();
         if(req.getUserCnt() != null) this.userCnt = req.getUserCnt();
         if(req.getIsOnline() != null) this.isOnline = req.getIsOnline();
-        if(req.getIsCamara() != null) this.isCamara = req.getIsCamara();
-        if(req.getIsMic() != null) this.isMic = req.getIsMic();
-        if(req.getIsDead() != null) this.isDead = req.getIsDead();
-        if(req.getRecruitStartAt() != null) this.recruitStartAt = req.getRecruitStartAt();
-        if(req.getRecruitEndAt() != null) this.recruitEndAt = req.getRecruitEndAt();
-        if(req.getStartAt() != null) this.startAt = req.getStartAt();
-        if(req.getEndAt() != null) this.endAt = req.getEndAt();
+        if(req.getIsCamara() != null) this.isCamera = req.getIsCamara();
+        if(req.getIsMic() != null) this.isMike = req.getIsMic();
+        if(req.getIsDead() != null) this.isFinish = req.getIsDead();
+        if(req.getRecruitStartAt() != null) this.recruitStartedAt = req.getRecruitStartAt();
+        if(req.getRecruitEndAt() != null) this.recruitEndedAt = req.getRecruitEndAt();
+        if(req.getStartAt() != null) this.startedAt = req.getStartAt();
+        if(req.getEndAt() != null) this.endedAt = req.getEndAt();
 
         return this;
     }

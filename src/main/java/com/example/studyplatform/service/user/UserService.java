@@ -52,14 +52,14 @@ public class UserService {
                 .roles(Collections.singletonList("ROLE_USER")).build();
 
         // 4. 경력 정보 있을 시 데이터 추가
-        if(!req.getCareers().isEmpty()){
+        if(req.getCareers() != null){
             List<Career> careers = toCareerList(req);
             careerRepository.saveAll(careers);
             careers.forEach(user::addCareer);
         }
 
         // 5. 스택 정보 있을 시 데이터 추가
-        if (!req.getTechIds().isEmpty()) {
+        if (req.getTechIds() != null) {
             List<TechStack> techStacks = toTechStackList(req);
             techStacks.forEach(user::addTechStack);
         }

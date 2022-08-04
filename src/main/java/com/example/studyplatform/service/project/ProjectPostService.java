@@ -34,10 +34,12 @@ public class ProjectPostService {
     public void create(ProjectPostCreateRequest req, User user) {
         ProjectPost projectPost = projectPostRepository.save(ProjectPostCreateRequest.toEntity(req, user));
 
-        List<ProjectOrganization> organizations = toOrganizationList(req.getOrganizations());
-        projectOrganizationRepository.saveAll(organizations);
-
-        organizations.forEach(projectPost::addOrganization);
+        // 테스트
+        if (req.getOrganizations() != null) {
+            List<ProjectOrganization> organizations = toOrganizationList(req.getOrganizations());
+            projectOrganizationRepository.saveAll(organizations);
+            organizations.forEach(projectPost::addOrganization);
+        }
     }
 
     public ProjectPostResponse read(UUID id){

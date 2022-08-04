@@ -40,13 +40,13 @@ public class StudyBoardResponse {
                 entity.getContent(),
                 entity.getUserCnt(),
                 entity.getIsOnline(),
-                entity.getIsCamara(),
-                entity.getIsMic(),
-                entity.getIsDead(),
-                entity.getRecruitStartAt(),
-                entity.getRecruitEndAt(),
-                entity.getStartAt(),
-                entity.getEndAt(),
+                entity.getIsCamera(),
+                entity.getIsMike(),
+                entity.getIsFinish(),
+                entity.getRecruitStartedAt(),
+                entity.getRecruitEndedAt(),
+                entity.getStartedAt(),
+                entity.getEndedAt(),
                 dtos);
     }
 

@@ -1,7 +1,7 @@
 package com.example.studyplatform.domain.project.projectPost;
 
 import com.example.studyplatform.constant.Status;
-import com.example.studyplatform.domain.BaseTimeEntity;
+import com.example.studyplatform.domain.board.Board;
 import com.example.studyplatform.domain.project.projectOrganization.ProjectOrganization;
 import com.example.studyplatform.domain.project.projectResume.ProjectResume;
 import com.example.studyplatform.domain.user.User;
@@ -12,51 +12,17 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DiscriminatorValue("PROJECT")
 @Entity
-public class ProjectPost extends BaseTimeEntity {
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Type(type="uuid-char")
-    private UUID id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
-
-    private String title;
-
-    private String content;
-
-    // to do : 광역 시군구 Open API로 받을지?
-
-    private Status status;
-
-    private Boolean isMike;
-
-    private Boolean isCamera;
-
-    private Boolean isFinish;
-
-    private Boolean isOnline;
-
-    private LocalDateTime recruitStartedAt;
-
-    private LocalDateTime recruitEndedAt;
-
-    private LocalDateTime projectStartedAt;
-
-    private LocalDateTime projectEndedAt;
+public class ProjectPost extends Board {
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ProjectOrganization> organizations = new ArrayList<>();
@@ -74,8 +40,8 @@ public class ProjectPost extends BaseTimeEntity {
         this.isOnline = req.getIsOnline();
         this.recruitStartedAt = req.getRecruitStartedAt();
         this.recruitEndedAt = req.getRecruitEndedAt();
-        this.projectEndedAt = req.getProjectEndedAt();
-        this.projectStartedAt = req.getProjectStartedAt();
+        this.endedAt = req.getProjectEndedAt();
+        this.startedAt = req.getProjectStartedAt();
     }
 
     public void inActive() {
@@ -116,8 +82,8 @@ public class ProjectPost extends BaseTimeEntity {
         this.isOnline = isOnline;
         this.recruitStartedAt = recruitStartedAt;
         this.recruitEndedAt = recruitEndedAt;
-        this.projectStartedAt = projectStartedAt;
-        this.projectEndedAt = projectEndedAt;
+        this.startedAt = projectStartedAt;
+        this.endedAt = projectEndedAt;
         this.status = Status.ACTIVE;
         this.isFinish = false;
     }

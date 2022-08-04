@@ -58,8 +58,8 @@ public class ProjectPostResponse {
                 projectPost.getIsOnline(),
                 projectPost.getRecruitStartedAt(),
                 projectPost.getRecruitEndedAt(),
-                projectPost.getProjectStartedAt(),
-                projectPost.getProjectEndedAt(),
+                projectPost.getStartedAt(),
+                projectPost.getEndedAt(),
                 dtos
         );
     }
