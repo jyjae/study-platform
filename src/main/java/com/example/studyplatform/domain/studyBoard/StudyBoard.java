@@ -51,7 +51,9 @@ public class StudyBoard extends Board {
             LocalDateTime recruitEndAt,
             LocalDateTime startAt,
             LocalDateTime endAt,
-            User user
+            User user,
+            String metropolitanCity,
+            String city
     ){
         this.title = title;
         this.content = content;
@@ -65,6 +67,8 @@ public class StudyBoard extends Board {
         this.startedAt = startAt;
         this.endedAt = endAt;
         this.user = user;
+        this.metropolitanCity = metropolitanCity;
+        this.city =city;
         this.status = Status.ACTIVE;
     }
 

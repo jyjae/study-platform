@@ -1,11 +1,14 @@
 package com.example.studyplatform.factory.entity;
 
 import com.example.studyplatform.domain.studyBoard.StudyBoard;
+import com.example.studyplatform.domain.user.User;
 
 import java.time.LocalDateTime;
 
+import static com.example.studyplatform.factory.entity.UserFactory.createUser;
+
 public class StudyBoardFactory {
-    public static StudyBoard createStudyBoard() {
+    public static StudyBoard createStudyBoard(User user) {
         return StudyBoard.builder()
                 .title("title")
                 .content("content")
@@ -18,6 +21,7 @@ public class StudyBoardFactory {
                 .recruitEndAt(LocalDateTime.now())
                 .recruitStartAt(LocalDateTime.now())
                 .startAt(LocalDateTime.now())
+                .user(user)
                 .build();
     }
 }

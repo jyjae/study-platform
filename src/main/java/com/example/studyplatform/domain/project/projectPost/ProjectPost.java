@@ -72,7 +72,7 @@ public class ProjectPost extends Board {
 
     @Builder
     public ProjectPost(User user, String title, String content, Boolean isCamera, Boolean isMike,
-                       Boolean isOnline, LocalDateTime recruitStartedAt,
+                       Boolean isOnline, LocalDateTime recruitStartedAt, String metropolitanCity, String city,
                        LocalDateTime recruitEndedAt, LocalDateTime projectStartedAt, LocalDateTime projectEndedAt) {
         this.user = user;
         this.title = title;
@@ -86,6 +86,8 @@ public class ProjectPost extends Board {
         this.endedAt = projectEndedAt;
         this.status = Status.ACTIVE;
         this.isFinish = false;
+        this.metropolitanCity = metropolitanCity;
+        this.city = city;
     }
 }
 

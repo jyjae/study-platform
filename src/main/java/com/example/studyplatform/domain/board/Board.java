@@ -4,15 +4,11 @@ import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.user.User;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -47,22 +43,15 @@ public class Board extends BaseTimeEntity {
 
     protected LocalDateTime endedAt;
 
+    // 광역시도
+    protected String metropolitanCity;
+
+    // 시군구
+    protected String city;
+
+    @Column(insertable = false, updatable = false)
+    protected String dtype;
+
     @Enumerated(EnumType.STRING)
     protected Status status;
-
-    public Board(User user, String title, String content, Boolean isOnline, Boolean isCamara, Boolean isMic, Boolean isFinish,
-                 LocalDateTime recruitStartedAt, LocalDateTime recruitEndedAt, LocalDateTime startedAt, LocalDateTime endedAt) {
-        this.user = user;
-        this.title = title;
-        this.content = content;
-        this.isOnline = isOnline;
-        this.isCamera = isCamara;
-        this.isMike = isMic;
-        this.isFinish = isFinish;
-        this.recruitStartedAt = recruitStartedAt;
-        this.recruitEndedAt = recruitEndedAt;
-        this.startedAt = startedAt;
-        this.endedAt = endedAt;
-        this.status = Status.ACTIVE;
-    }
 }

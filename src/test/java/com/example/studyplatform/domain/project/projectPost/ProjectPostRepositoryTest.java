@@ -1,6 +1,8 @@
 package com.example.studyplatform.domain.project.projectPost;
 
 import com.example.studyplatform.constant.Status;
+import com.example.studyplatform.domain.user.User;
+import com.example.studyplatform.domain.user.UserRepository;
 import com.example.studyplatform.exception.ProjectPostNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +12,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import static com.example.studyplatform.factory.entity.ProjectPostFactory.createProjectPost;
+import static com.example.studyplatform.factory.entity.UserFactory.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 class ProjectPostRepositoryTest {
     @Autowired
     private ProjectPostRepository projectPostRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @PersistenceContext
     private EntityManager em;
@@ -23,7 +28,8 @@ class ProjectPostRepositoryTest {
     @Test
     void saveAndReadTest() {
         // given
-        ProjectPost projectPost = projectPostRepository.save(createProjectPost());
+        User user = userRepository.save(createUser());
+        ProjectPost projectPost = projectPostRepository.save(createProjectPost(user));
         emClear();
 
         // when
