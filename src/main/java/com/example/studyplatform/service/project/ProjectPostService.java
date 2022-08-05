@@ -5,10 +5,12 @@ import com.example.studyplatform.domain.project.projectOrganization.ProjectOrgan
 import com.example.studyplatform.domain.project.projectOrganization.ProjectOrganizationRepository;
 import com.example.studyplatform.domain.project.projectPost.ProjectPost;
 import com.example.studyplatform.domain.project.projectPost.ProjectPostRepository;
+import com.example.studyplatform.domain.project.projectResume.ProjectResume;
 import com.example.studyplatform.domain.techStack.TechStackRepository;
-import com.example.studyplatform.dto.project.ProjectOrganizationCreateDto;
-import com.example.studyplatform.dto.project.ProjectPostCreateRequest;
-import com.example.studyplatform.dto.project.ProjectPostDto;
+import com.example.studyplatform.domain.user.User;
+import com.example.studyplatform.dto.project.*;
+import com.example.studyplatform.dto.techStack.TechStackDto;
+import com.example.studyplatform.exception.ProjectOrganizationNotFoundException;
 import com.example.studyplatform.exception.ProjectPostNotFoundException;
 import com.example.studyplatform.exception.TechStackNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -28,27 +31,63 @@ public class ProjectPostService {
 
     // 프로젝트 게시글 생성 메소드
     @Transactional
-    public void create(ProjectPostCreateRequest req) {
-        ProjectPost projectPost = projectPostRepository.save(ProjectPostCreateRequest.toEntity(req));
+    public void create(ProjectPostCreateRequest req, User user) {
+        ProjectPost projectPost = projectPostRepository.save(ProjectPostCreateRequest.toEntity(req, user));
 
-        List<ProjectOrganization> organizations = toOrganizationList(req);
-        projectOrganizationRepository.saveAll(organizations);
-
-        organizations.forEach(projectPost::addOrganization);
+        // 테스트
+        if (req.getOrganizations() != null) {
+            List<ProjectOrganization> organizations = toOrganizationList(req.getOrganizations());
+            projectOrganizationRepository.saveAll(organizations);
+            organizations.forEach(projectPost::addOrganization);
+        }
     }
 
-    public ProjectPostDto read(Long id){
-        return ProjectPostDto.toDto(projectPostRepository.findById(id).orElseThrow(ProjectPostNotFoundException::new));
+    public ProjectPostResponse read(Long id){
+        ProjectPost projectPost = projectPostRepository.findById(id).orElseThrow(ProjectPostNotFoundException::new);
+
+        return ProjectPostResponse.toDto(projectPost, createProjectOrganizationDto(projectPost));
+    }
+
+    @Transactional
+    public void update(Long id, ProjectPostUpdateRequest req) {
+        ProjectPost projectPost = projectPostRepository.findById(id).orElseThrow(ProjectPostNotFoundException::new);
+
+        if (!req.getAddOrganizations().isEmpty()) {
+            List<ProjectOrganization> organizations = toOrganizationList(req.getAddOrganizations());
+            projectOrganizationRepository.saveAll(organizations);
+            organizations.forEach(projectPost::addOrganization);
+        }
+
+        req.getDeleteOrganizationIds().forEach(i -> {
+            ProjectOrganization organization = projectOrganizationRepository.findByIdAndStatus(i, Status.ACTIVE)
+                    .orElseThrow(ProjectOrganizationNotFoundException::new);
+
+            projectPost.deleteOrganization(organization);
+            organization.inActive();
+        });
+
+        projectPost.update(req);
     }
 
     @Transactional
     public void delete(Long id) {
         ProjectPost projectPost = projectPostRepository.findById(id).orElseThrow(ProjectPostNotFoundException::new);
+        projectPost.inActive();
+
+        projectPost.getOrganizations().forEach(ProjectOrganization::inActive);
+        projectPost.getProjectResumes().forEach(ProjectResume::inActive);
+
         projectPostRepository.delete(projectPost);
     }
 
-    private List<ProjectOrganization> toOrganizationList(ProjectPostCreateRequest req) {
-        return req.getOrganizations().stream().map(dto ->
+    private List<ProjectOrganizationDto> createProjectOrganizationDto(ProjectPost projectPost) {
+        return projectPost.getOrganizations().stream().map(organization ->
+                ProjectOrganizationDto.toDto(organization, TechStackDto.toDto(organization.getTechStack()))
+        ).collect(Collectors.toList());
+    }
+
+    private List<ProjectOrganization> toOrganizationList(List<ProjectOrganizationCreateDto> req) {
+        return req.stream().map(dto ->
                 ProjectOrganizationCreateDto.toEntity(dto, techStackRepository.findByIdAndStatus(dto.getTechId(), Status.ACTIVE)
                         .orElseThrow(TechStackNotFoundException::new))).collect(Collectors.toList());
     }

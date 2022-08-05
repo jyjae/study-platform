@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -39,13 +40,13 @@ public class StudyBoardResponse {
                 entity.getContent(),
                 entity.getUserCnt(),
                 entity.getIsOnline(),
-                entity.getIsCamara(),
-                entity.getIsMic(),
-                entity.getIsDead(),
-                entity.getRecruitStartAt(),
-                entity.getRecruitEndAt(),
-                entity.getStartAt(),
-                entity.getEndAt(),
+                entity.getIsCamera(),
+                entity.getIsMike(),
+                entity.getIsFinish(),
+                entity.getRecruitStartedAt(),
+                entity.getRecruitEndedAt(),
+                entity.getStartedAt(),
+                entity.getEndedAt(),
                 dtos);
     }
 

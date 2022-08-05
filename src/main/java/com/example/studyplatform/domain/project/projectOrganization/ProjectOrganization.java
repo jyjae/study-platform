@@ -34,6 +34,10 @@ public class ProjectOrganization extends BaseTimeEntity {
 
     private Status status;
 
+    public void inActive() {
+        this.status = Status.INACTIVE;
+    }
+
     public void finished() {
         this.isFinish = true;
     }
