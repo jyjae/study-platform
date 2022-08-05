@@ -1,10 +1,7 @@
 package com.example.studyplatform.dto.comment;
 
-import com.example.studyplatform.constant.comment.CommentType;
 import com.example.studyplatform.domain.board.Board;
 import com.example.studyplatform.domain.comment.Comment;
-import com.example.studyplatform.domain.project.projectPost.ProjectPost;
-import com.example.studyplatform.domain.studyBoard.StudyBoard;
 import com.example.studyplatform.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;

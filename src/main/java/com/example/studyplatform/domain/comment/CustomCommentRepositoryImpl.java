@@ -1,10 +1,7 @@
 package com.example.studyplatform.domain.comment;
 
 import com.example.studyplatform.constant.Status;
-import com.example.studyplatform.constant.comment.CommentType;
 import com.example.studyplatform.domain.board.Board;
-import com.example.studyplatform.domain.project.projectPost.ProjectPost;
-import com.example.studyplatform.domain.studyBoard.StudyBoard;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 

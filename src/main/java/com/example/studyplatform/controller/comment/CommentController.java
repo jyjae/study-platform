@@ -1,6 +1,5 @@
 package com.example.studyplatform.controller.comment;
 
-import com.example.studyplatform.constant.comment.CommentType;
 import com.example.studyplatform.domain.user.User;
 import com.example.studyplatform.dto.comment.PostCommentRequest;
 import com.example.studyplatform.dto.comment.PutCommentRequest;

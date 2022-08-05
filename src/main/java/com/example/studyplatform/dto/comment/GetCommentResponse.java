@@ -28,11 +28,12 @@ public class GetCommentResponse {
     public static GetCommentResponse of(
             Comment comment
     ) {
+        Comment parentComment = comment.getParentComment();
         return new GetCommentResponse(
                 comment.getUser().getId(),
-                comment.getParentComment().getId(),
-                comment.getParentComment().getUser().getId(),
-                comment.getParentComment().getUser().getNickname(),
+                parentComment==null? null:parentComment.getId(),
+                parentComment==null? null:parentComment.getUser().getId(),
+                parentComment==null? null:parentComment.getUser().getNickname(),
                 comment.getUser().getNickname(),
                 comment.getUser().getProfileImg(),
                 comment.getId(),
