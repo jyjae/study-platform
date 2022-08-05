@@ -19,7 +19,7 @@ public class CustomCommentRepositoryImpl extends QuerydslRepositorySupport imple
 
         JPQLQuery<Long> query = from(comment)
                 .select(comment.commentGroup)
-                //.where(QComment.board.id.eq(board.getId()))
+                .where(comment.board.id.eq(board.getId()))
                 .where(comment.status.eq(Status.ACTIVE))
                 .orderBy(comment.commentGroup.desc());
 
