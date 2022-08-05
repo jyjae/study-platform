@@ -10,6 +10,4 @@ public interface CommentRepository extends CustomCommentRepository, JpaRepositor
     Optional<Comment> findByIdAndStatus(Long commentId, Status active);
 
     Optional<Comment> findByIdAndUserIdAndStatus(Long commentId, Long userId, Status active);
-
-    Optional<List<Comment>> findAllByStudyBoardIdAndStatus(Long boardId, Status active);
 }
