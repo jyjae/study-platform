@@ -18,8 +18,10 @@ public enum ErrorCode {
 
     PROJECT_ORGANIZATION_DECREASE_ZERO(-1008, "프로젝트 모집 인원이 0이하 입니다."),
     PROJECT_POST_NOT_FOUND(-1009, "해당 프로젝트 게시글은 존재하지 않습니다."),
-    PROJECT_ORGANIZATION_NOT_FOUND(-1010, "해당 프로젝트 인원은 존재하지 않습니다.");
+    PROJECT_ORGANIZATION_NOT_FOUND(-1010, "해당 프로젝트 인원은 존재하지 않습니다."),
 
+
+    COMMENT_NOT_FOUND(-1300, "해당 댓글은 존재하지 않습니다.");
 
     private final int code;
     private final String message;
