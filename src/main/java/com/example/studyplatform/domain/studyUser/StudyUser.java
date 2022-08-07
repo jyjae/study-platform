@@ -3,8 +3,9 @@ package com.example.studyplatform.domain.studyUser;
 import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.study.Study;
-import com.example.studyplatform.domain.user.Role;
+import com.example.studyplatform.domain.techStack.Stack;
 import com.example.studyplatform.domain.user.User;
+import com.example.studyplatform.dto.studyUser.StudyUserResponse;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,8 +24,9 @@ public class StudyUser extends BaseTimeEntity {
     private boolean studyLeader;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Stack stack;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,9 +36,31 @@ public class StudyUser extends BaseTimeEntity {
     private User user;
 
     @Builder
-    public StudyUser(boolean studyLeader, Role role, Status status) {
+    public StudyUser(Study study, User user, Stack stack, Status status, boolean studyLeader) {
+        this.study = study;
+        this.user = user;
+        this.stack = stack;
         this.studyLeader = studyLeader;
-        this.role = role;
         this.status = status;
+    }
+
+    public void inActive() {
+        this.status = Status.INACTIVE;
+    }
+
+    public void active() {
+        this.status = Status.ACTIVE;
+    }
+
+    public StudyUserResponse result(){
+        return StudyUserResponse.of(
+                this.id,
+                this.user.getId(),
+                this.study.getId(),
+                this.stack,
+                this.status,
+                getCreatedAt(),
+                getUpdatedAt()
+        );
     }
 }

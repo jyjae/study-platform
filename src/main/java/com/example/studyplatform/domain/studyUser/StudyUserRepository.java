@@ -1,4 +1,6 @@
 package com.example.studyplatform.domain.studyUser;
 
-public interface StudyUserRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface StudyUserRepository extends JpaRepository<StudyUser, Long> {
 }
