@@ -22,4 +22,19 @@ public class ProjectPostFactory {
                 .user(user)
                 .build();
     }
+
+    public static ProjectPost createProjectPost(User user, String title) {
+        return ProjectPost.builder()
+                .title(title)
+                .content("content")
+                .isOnline(true)
+                .isMike(true)
+                .isCamera(true)
+                .recruitStartedAt(LocalDateTime.now())
+                .projectEndedAt(LocalDateTime.now())
+                .recruitEndedAt(LocalDateTime.now())
+                .projectStartedAt(LocalDateTime.now())
+                .user(user)
+                .build();
+    }
 }
