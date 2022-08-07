@@ -5,6 +5,8 @@ import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.studyNotice.StudyNotice;
 import com.example.studyplatform.domain.studyTarget.StudyTarget;
 import com.example.studyplatform.domain.studyUser.StudyUser;
+import com.example.studyplatform.dto.study.PutStudyRequest;
+import com.example.studyplatform.dto.study.StudyResponse;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,6 +46,30 @@ public class Study extends BaseTimeEntity {
         this.studyName = studyName;
         this.endedAt = endedAt;
         this.status = status;
+    }
+
+    public StudyResponse result(){
+        return StudyResponse.of(
+                this.id,
+                this.studyName,
+                this.endedAt,
+                this.status);
+    }
+
+    public StudyResponse update(PutStudyRequest req){
+        this.studyName = req.getStudyName();
+        this.endedAt = req.getEndedAt();
+        this.status = req.getStatus();
+
+        return StudyResponse.of(id, studyName, endedAt, status);
+    }
+
+    public void inActive() {
+        this.status = Status.INACTIVE;
+    }
+
+    public void active() {
+        this.status = Status.ACTIVE;
     }
 }
 

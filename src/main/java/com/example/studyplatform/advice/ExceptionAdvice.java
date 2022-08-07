@@ -24,7 +24,6 @@ public class ExceptionAdvice {
         return Response.failure(STUDY_APPLY_NOT_FOUND.getCode(), STUDY_APPLY_NOT_FOUND.getMessage());
     }
 
-
     @ExceptionHandler(StudyTechStackNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Response studyTechStackNotFoundException(StudyTechStackNotFoundException e) {
@@ -35,6 +34,23 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Response studyBoardNotFoundException(StudyBoardNotFoundException e) {
         return Response.failure(STUDY_BOARD_NOT_FOUND.getCode(), STUDY_BOARD_NOT_FOUND.getMessage());
+    }
+
+    @ExceptionHandler(StudyNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response studyNotFoundException(StudyNotFoundException e) {
+        return Response.failure(STUDY_NOT_FOUND.getCode(), STUDY_NOT_FOUND.getMessage());
+    }
+
+    @ExceptionHandler(StudyNoticeNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response studyNoticeNotFound(StudyNoticeNotFoundException e) {
+        return Response.failure(STUDY_NOTICE_NOT_FOUND.getCode(), STUDY_NOTICE_NOT_FOUND.getMessage());
+    }
+
+    @ExceptionHandler(CalenderNotFoundException.class)
+    public Response calenderNotFoundException(CalenderNotFoundException e) {
+        return Response.failure(CALENDER_NOT_FOUND.getCode(), CALENDER_NOT_FOUND.getMessage());
     }
 
     @ExceptionHandler(TechStackNotFoundException.class)
