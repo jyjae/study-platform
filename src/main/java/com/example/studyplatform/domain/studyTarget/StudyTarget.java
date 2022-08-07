@@ -2,6 +2,8 @@ package com.example.studyplatform.domain.studyTarget;
 
 import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.study.Study;
+import com.example.studyplatform.dto.studyTarget.PutStudyTargetRequest;
+import com.example.studyplatform.dto.studyTarget.StudyTargetResponse;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +21,7 @@ public class StudyTarget extends BaseTimeEntity {
 
     private String studyTargetTitle;
 
-    private int studyTargetOrder;
+    private int studyTargetPriority;
 
     private boolean studyTargetSuccess;
 
@@ -27,9 +29,21 @@ public class StudyTarget extends BaseTimeEntity {
     private Study study;
 
     @Builder
-    public StudyTarget(String studyTargetTitle, int studyTargetOrder) {
+    public StudyTarget(String studyTargetTitle, int studyTargetPriority, Study study) {
+        this.study = study;
         this.studyTargetTitle = studyTargetTitle;
-        this.studyTargetOrder = studyTargetOrder;
+        this.studyTargetPriority = studyTargetPriority;
         this.studyTargetSuccess = false;
     }
+
+    public StudyTargetResponse result(){
+        return StudyTargetResponse.of(id, studyTargetTitle, studyTargetPriority);
+    }
+
+    public StudyTargetResponse update(PutStudyTargetRequest req){
+        this.studyTargetTitle = req.getStudyTargetTitle();
+        this.studyTargetPriority = req.getStudyTargetPriority();
+        return StudyTargetResponse.of(id, studyTargetTitle, studyTargetPriority);
+    }
+
 }
