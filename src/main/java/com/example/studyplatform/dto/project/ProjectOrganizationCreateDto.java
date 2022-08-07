@@ -1,6 +1,6 @@
 package com.example.studyplatform.dto.project;
 
-import com.example.studyplatform.domain.project.projectOrganization.CareerStatus;
+import com.example.studyplatform.constant.CareerStatus;
 import com.example.studyplatform.domain.project.projectOrganization.ProjectOrganization;
 import com.example.studyplatform.domain.techStack.TechStack;
 import lombok.AllArgsConstructor;

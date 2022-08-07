@@ -1,5 +1,6 @@
 package com.example.studyplatform.domain.studyBoard;
 
+import com.example.studyplatform.constant.CareerStatus;
 import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.board.Board;
@@ -28,6 +29,8 @@ public class StudyBoard extends Board {
 
     private Integer userCnt;
 
+    private CareerStatus careerStatus;
+
     @OneToMany(mappedBy = "studyBoard", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StudyTechStack> studyTechStacks = new ArrayList<>();
 
@@ -35,8 +38,15 @@ public class StudyBoard extends Board {
     @OneToMany(mappedBy = "studyBoard", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StudyApply> studyApplies = new ArrayList<>();
 
-    // 광역시도 추가
-    // 지역 추가
+    @Override
+    public String toString() {
+        return "StudyBoard{" +
+                "userCnt=" + userCnt +
+                ", careerStatus=" + careerStatus +
+                ", studyTechStacks=" + studyTechStacks +
+                ", studyApplies=" + studyApplies +
+                '}';
+    }
 
     @Builder
     public StudyBoard(
@@ -52,6 +62,7 @@ public class StudyBoard extends Board {
             LocalDateTime startAt,
             LocalDateTime endAt,
             User user,
+            CareerStatus careerStatus,
             String metropolitanCity,
             String city
     ){
@@ -69,6 +80,7 @@ public class StudyBoard extends Board {
         this.user = user;
         this.metropolitanCity = metropolitanCity;
         this.city =city;
+        this.careerStatus = careerStatus;
         this.status = Status.ACTIVE;
     }
 

@@ -31,6 +31,14 @@ public class ProjectPost extends Board {
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ProjectResume> projectResumes = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "ProjectPost{" +
+                "organizations=" + organizations +
+                ", projectResumes=" + projectResumes +
+                '}';
+    }
+
     public void update(ProjectPostUpdateRequest req) {
         this.title = req.getTitle();
         this.content = req.getContent();
