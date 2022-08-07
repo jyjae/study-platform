@@ -15,6 +15,8 @@ import com.example.studyplatform.exception.StudyBoardNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Service
 public class StudyApplyService {

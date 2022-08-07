@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectResumeRegisterRequest {
+public class ProjectResumeApprovalRequest {
     private Long projectPostId;
-    private Long resumeId;
 }

@@ -1,7 +1,6 @@
 package com.example.studyplatform.dto.project;
 
 import com.example.studyplatform.constant.Status;
-import com.example.studyplatform.domain.project.projectOrganization.ProjectOrganization;
 import com.example.studyplatform.domain.project.projectPost.ProjectPost;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +8,17 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectPostDto {
+public class ProjectPostResponse {
     private Long id;
+
+    private Long userId;
+
+    private String nickname;
 
     private String title;
 
@@ -38,12 +42,13 @@ public class ProjectPostDto {
 
     private LocalDateTime projectEndedAt;
 
-    // 추후 DTO로 수정
-    private List<ProjectOrganization> organizations;
+    private List<ProjectOrganizationDto> organizations;
 
-    public static ProjectPostDto toDto(ProjectPost projectPost) {
-        return new ProjectPostDto(
+    public static ProjectPostResponse toDto(ProjectPost projectPost, List<ProjectOrganizationDto> dtos) {
+        return new ProjectPostResponse(
                 projectPost.getId(),
+                projectPost.getUser().getId(),
+                projectPost.getUser().getNickname(),
                 projectPost.getTitle(),
                 projectPost.getContent(),
                 projectPost.getStatus(),
@@ -53,9 +58,9 @@ public class ProjectPostDto {
                 projectPost.getIsOnline(),
                 projectPost.getRecruitStartedAt(),
                 projectPost.getRecruitEndedAt(),
-                projectPost.getProjectStartedAt(),
-                projectPost.getProjectEndedAt(),
-                projectPost.getOrganizations()
+                projectPost.getStartedAt(),
+                projectPost.getEndedAt(),
+                dtos
         );
     }
 }

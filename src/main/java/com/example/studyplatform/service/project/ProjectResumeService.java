@@ -8,14 +8,13 @@ import com.example.studyplatform.domain.project.projectPost.ProjectPostRepositor
 import com.example.studyplatform.domain.project.projectResume.ProjectResume;
 import com.example.studyplatform.domain.project.projectResume.ProjectResumeRepository;
 import com.example.studyplatform.domain.user.User;
-import com.example.studyplatform.domain.user.UserRepository;
 import com.example.studyplatform.dto.project.ProjectResumeCreateRequest;
 import com.example.studyplatform.dto.project.ProjectResumeDeleteRequest;
-import com.example.studyplatform.dto.project.ProjectResumeRegisterRequest;
+import com.example.studyplatform.dto.project.ProjectResumeApprovalRequest;
+import com.example.studyplatform.dto.project.ProjectResumeResponse;
 import com.example.studyplatform.exception.ProjectOrganizationNotFoundException;
 import com.example.studyplatform.exception.ProjectPostNotFoundException;
 import com.example.studyplatform.exception.ProjectResumeNotFoundException;
-import com.example.studyplatform.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,22 +24,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ProjectResumeService {
     private final ProjectResumeRepository projectResumeRepository;
-    private final UserRepository userRepository;
     private final ProjectOrganizationRepository projectOrganizationRepository;
     private final ProjectPostRepository projectPostRepository;
 
-    public void create(ProjectResumeCreateRequest req) {
-        User user = userRepository.findByIdAndStatus(req.getUserId(), Status.ACTIVE).orElseThrow(UserNotFoundException::new);
+    @Transactional
+    public void create(ProjectResumeCreateRequest req, User user) {
         ProjectOrganization projectOrganization = projectOrganizationRepository
                 .findByIdAndStatus(req.getOrganizationId(), Status.ACTIVE)
                 .orElseThrow(ProjectOrganizationNotFoundException::new);
 
-        ProjectResume projectResume = projectResumeRepository.save(ProjectResumeCreateRequest.toEntity(user, projectOrganization));
+        projectResumeRepository.save(ProjectResumeCreateRequest.toEntity(user, projectOrganization));
     }
 
     // 신청서 승인
-    public void register(ProjectResumeRegisterRequest req) {
-        ProjectResume projectResume = projectResumeRepository.findByIdAndStatus(req.getResumeId(), Status.ACTIVE)
+    @Transactional
+    public void approvalResume(Long resumeId, ProjectResumeApprovalRequest req) {
+        ProjectResume projectResume = projectResumeRepository.findByIdAndStatus(resumeId, Status.ACTIVE)
                 .orElseThrow(ProjectResumeNotFoundException::new);
 
         ProjectPost projectPost = projectPostRepository.findByIdAndStatus(req.getProjectPostId(), Status.ACTIVE)
@@ -53,9 +52,19 @@ public class ProjectResumeService {
         projectPost.addProjectResume(projectResume);
     }
 
+    // 신청서 거절
+    @Transactional
+    public void deniedResume(Long resumeId) {
+        ProjectResume projectResume = projectResumeRepository.findByIdAndStatus(resumeId, Status.ACTIVE)
+                .orElseThrow(ProjectResumeNotFoundException::new);
+
+        projectResume.inActive();
+    }
+
     // 확정된 신청서 삭제
-    public void delete(ProjectResumeDeleteRequest req) {
-        ProjectResume projectResume = projectResumeRepository.findByIdAndStatus(req.getResumeId(), Status.ACTIVE)
+    @Transactional
+    public void deleteAppliedResume(Long resumeId, ProjectResumeDeleteRequest req) {
+        ProjectResume projectResume = projectResumeRepository.findByIdAndStatus(resumeId, Status.ACTIVE)
                 .orElseThrow(ProjectResumeNotFoundException::new);
 
         ProjectPost projectPost = projectPostRepository.findByIdAndStatus(req.getProjectPostId(), Status.ACTIVE)
@@ -66,5 +75,12 @@ public class ProjectResumeService {
 
         // 게시글에 신청서 삭제
         projectPost.deleteProjectResume(projectResume);
+    }
+
+    public ProjectResumeResponse read(Long resumeId) {
+        ProjectResume projectResume = projectResumeRepository.findByIdAndStatus(resumeId, Status.ACTIVE)
+                .orElseThrow(ProjectResumeNotFoundException::new);
+
+        return ProjectResumeResponse.toDto(projectResume);
     }
 }

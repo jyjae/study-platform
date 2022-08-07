@@ -11,6 +11,13 @@ import static com.example.studyplatform.advice.ErrorCode.*;
 
 @RestControllerAdvice
 public class ExceptionAdvice {
+    @ExceptionHandler(CommentNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response commentNotFoundException(CommentNotFoundException e) {
+        return Response.failure(COMMENT_NOT_FOUND.getCode(), COMMENT_NOT_FOUND.getMessage());
+    }
+
+
     @ExceptionHandler(StudyApplyNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Response studyApplyNotFoundException(StudyApplyNotFoundException e) {
