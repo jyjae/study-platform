@@ -1,5 +1,6 @@
 package com.example.studyplatform.domain.project.projectOrganization;
 
+import com.example.studyplatform.constant.CareerStatus;
 import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.techStack.TechStack;

@@ -1,5 +1,6 @@
 package com.example.studyplatform.dto.studyBoard;
 
+import com.example.studyplatform.constant.CareerStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class PostStudyBoardRequest {
     private Boolean isCamara;
     private Boolean isMic;
     private Boolean isDead;
+    private CareerStatus careerStatus;
     private LocalDateTime recruitStartAt;
     private LocalDateTime recruitEndAt;
     private LocalDateTime startAt;

@@ -1,36 +1,41 @@
 package com.example.studyplatform.dto.board;
 
+import com.example.studyplatform.constant.CareerStatus;
+import com.example.studyplatform.domain.board.Board;
+import com.example.studyplatform.domain.project.projectPost.ProjectPost;
+import com.example.studyplatform.dto.studyTechStack.StudyTechStackDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardDto {
-    private Long id;
+    protected Long id;
 
-    private String dtype;
+    protected String dtype;
 
-    private String nickname;
+    protected String nickname;
 
-    private String title;
+    protected String title;
 
-    private Boolean isOnline;
+    protected Boolean isOnline;
 
-    private Boolean isCamera;
+    protected Boolean isCamera;
 
-    private Boolean isMike;
+    protected Boolean isMike;
 
-    private Boolean isFinish;
+    protected Boolean isFinish;
 
-    private LocalDateTime recruitStartedAt;
+    protected LocalDateTime recruitStartedAt;
 
-    private LocalDateTime recruitEndedAt;
+    protected LocalDateTime recruitEndedAt;
 
-    private LocalDateTime startedAt;
+    protected LocalDateTime startedAt;
 
-    private LocalDateTime endedAt;
+    protected LocalDateTime endedAt;
 }
