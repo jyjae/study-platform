@@ -34,17 +34,17 @@ public class CalenderService {
 
         // 1.일정 생성
         Calender calender = Calender.builder()
-                .calenderTitle(req.getCalenderTitle())
-                .calenderContents(req.getCalenderContents())
-                .study(study)
-                .userId(user.getId())
-                .startDate(req.getStartDate())
-                .endDate(req.getEndDate())
-                .startTime(req.getStartTime())
-                .endTime(req.getEndTime())
-                .alarm(req.isAlarm())
-                .online(req.isOnline())
-                .build();
+                            .calenderTitle(req.getCalenderTitle())
+                            .calenderContents(req.getCalenderContents())
+                            .study(study)
+                            .userId(user.getId())
+                            .startDate(req.getStartDate())
+                            .endDate(req.getEndDate())
+                            .startTime(req.getStartTime())
+                            .endTime(req.getEndTime())
+                            .isAlarm(req.isAlarm())
+                            .isOnline(req.isOnline())
+                            .build();
 
         Calender savedCalender = calenderRepository.save(calender);
 
@@ -82,9 +82,7 @@ public class CalenderService {
                 attendRepository.save(attend);
             }
         }
-
         return calender.update(req);
-
     }
 
     @Transactional

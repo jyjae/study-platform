@@ -14,9 +14,11 @@ public class StudyTargetController {
 
     private final StudyTargetService studyTargetService;
 
-    @GetMapping()
-    public Response list() {
-        return Response.success(studyTargetService.list());
+    @GetMapping("/{studyId}")
+    public Response list(
+        @PathVariable Long studyId
+    ) {
+        return Response.success(studyTargetService.list(studyId));
     }
 
     @PostMapping("/{studyId}")
@@ -26,7 +28,7 @@ public class StudyTargetController {
         return Response.success(studyTargetService.create(studyId, req));
     }
 
-    @PutMapping("/{studyTargetId}")
+    @PatchMapping("/{studyTargetId}")
     public Response update(
             @PathVariable Long studyTargetId,
             @RequestBody PutStudyTargetRequest req

@@ -22,7 +22,7 @@ public class Calender extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId; // TODO: 유저아이디를 외래키로 관리해야하는가?
+    private Long userId;
 
     private String calenderTitle;
 
@@ -36,9 +36,9 @@ public class Calender extends BaseTimeEntity {
 
     private LocalDateTime endTime;
 
-    private boolean alarm;
+    private boolean isAlarm;
 
-    private boolean online;
+    private boolean isOnline;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -53,8 +53,8 @@ public class Calender extends BaseTimeEntity {
                     LocalDateTime endDate,
                     LocalDateTime startTime,
                     LocalDateTime endTime,
-                    boolean alarm,
-                    boolean online,
+                    boolean isAlarm,
+                    boolean isOnline,
                     Study study,
                     Long userId
     ) {
@@ -64,8 +64,8 @@ public class Calender extends BaseTimeEntity {
         this.endDate = endDate;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.alarm = alarm;
-        this.online = online;
+        this.isAlarm = isAlarm;
+        this.isOnline = isOnline;
         this.status = Status.ACTIVE;
         this.study = study;
         this.userId = userId;
@@ -83,8 +83,8 @@ public class Calender extends BaseTimeEntity {
                 startTime,
                 endTime,
                 userIds,
-                alarm,
-                online,
+                isAlarm,
+                isOnline,
                 status
         );
     }
@@ -96,8 +96,8 @@ public class Calender extends BaseTimeEntity {
         this.endDate = req.getEndDate();
         this.startTime = req.getStartTime();
         this.endTime = req.getEndTime();
-        this.alarm = req.isAlarm();
-        this.online = req.isOnline();
+        this.isAlarm = req.isAlarm();
+        this.isOnline = req.isOnline();
 
         return CalenderResponse.of(
                 this.id,
@@ -110,8 +110,8 @@ public class Calender extends BaseTimeEntity {
                 this.startTime,
                 this.endTime,
                 req.getAttends(), // 참석자
-                this.alarm,
-                this.online,
+                this.isAlarm,
+                this.isOnline,
                 this.status
         );
     }

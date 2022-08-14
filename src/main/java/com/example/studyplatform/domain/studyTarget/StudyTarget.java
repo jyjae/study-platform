@@ -23,7 +23,7 @@ public class StudyTarget extends BaseTimeEntity {
 
     private int studyTargetPriority;
 
-    private boolean studyTargetSuccess;
+    private boolean isStudyTargetSuccess;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Study study;
@@ -33,17 +33,17 @@ public class StudyTarget extends BaseTimeEntity {
         this.study = study;
         this.studyTargetTitle = studyTargetTitle;
         this.studyTargetPriority = studyTargetPriority;
-        this.studyTargetSuccess = false;
+        this.isStudyTargetSuccess = false;
     }
 
     public StudyTargetResponse result(){
-        return StudyTargetResponse.of(id, studyTargetTitle, studyTargetPriority);
+        return StudyTargetResponse.of(id, studyTargetTitle, studyTargetPriority, isStudyTargetSuccess);
     }
 
     public StudyTargetResponse update(PutStudyTargetRequest req){
         this.studyTargetTitle = req.getStudyTargetTitle();
         this.studyTargetPriority = req.getStudyTargetPriority();
-        return StudyTargetResponse.of(id, studyTargetTitle, studyTargetPriority);
+        return StudyTargetResponse.of(id, studyTargetTitle, studyTargetPriority, isStudyTargetSuccess);
     }
 
 }

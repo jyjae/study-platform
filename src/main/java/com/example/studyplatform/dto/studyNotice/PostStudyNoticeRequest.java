@@ -22,7 +22,7 @@ public class PostStudyNoticeRequest {
                 .studyNoticeTitle(studyNoticeTitle)
                 .studyNoticeContents(studyNoticeContents)
                 .study(study)
-//                .user(user)
+                .user(user)
                 .build();
     }
 }

@@ -5,21 +5,17 @@ import com.example.studyplatform.domain.board.Board;
 import com.example.studyplatform.domain.board.BoardRepository;
 import com.example.studyplatform.domain.comment.Comment;
 import com.example.studyplatform.domain.comment.CommentRepository;
-import com.example.studyplatform.domain.project.projectPost.ProjectPost;
-import com.example.studyplatform.domain.studyBoard.StudyBoard;
 import com.example.studyplatform.domain.user.User;
+import com.example.studyplatform.dto.comment.CommentResponse;
 import com.example.studyplatform.dto.comment.GetCommentResponse;
 import com.example.studyplatform.dto.comment.PostCommentRequest;
-import com.example.studyplatform.dto.comment.CommentResponse;
 import com.example.studyplatform.dto.comment.PutCommentRequest;
 import com.example.studyplatform.exception.CommentNotFoundException;
-import com.example.studyplatform.exception.ProjectPostNotFoundException;
 import com.example.studyplatform.exception.StudyBoardNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor

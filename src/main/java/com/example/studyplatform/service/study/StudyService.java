@@ -40,13 +40,13 @@ public class StudyService {
     public StudyResponse create(PostStudyRequest req, User user) {
         Study study = studyRepository.save(req.toEntity());
 
-        // TODO : 현재 Stack 값은 TeckStack에 존재함, 그렇다면 유저에 Stack 값을 어떻게 가져올것인지?
-        StudyUser studyUser = StudyUser.builder()
-                .study(study)
-                .user(user)
-                .studyLeader(true)
-                .status(Status.ACTIVE)
-                .build();
+        StudyUser studyUser = StudyUser
+                            .builder()
+                            .study(study)
+                            .user(user)
+                            .studyLeader(true)
+                            .status(Status.ACTIVE)
+                            .build();
 
         studyUserRepository.save(studyUser);
 

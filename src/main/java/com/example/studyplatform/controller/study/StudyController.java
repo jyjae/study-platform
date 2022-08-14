@@ -21,11 +21,11 @@ public class StudyController {
         return Response.success(studyService.list());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{studyId}")
     public Response get(
-            @PathVariable Long id
+            @PathVariable Long studyId
     ) {
-        return Response.success(studyService.get(id));
+        return Response.success(studyService.get(studyId));
     }
 
     @PostMapping()
@@ -36,19 +36,19 @@ public class StudyController {
         return Response.success(studyService.create(req, user));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{studyId}")
     public Response update(
-            @PathVariable Long id,
+            @PathVariable Long studyId,
             @RequestBody PutStudyRequest req
     ) {
-        return Response.success(studyService.update(req, id));
+        return Response.success(studyService.update(req, studyId));
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{studyId}")
     public Response delete(
-            @PathVariable Long id
+            @PathVariable Long studyId
     ){
-        return studyService.delete(id);
+        return studyService.delete(studyId);
     }
 }
