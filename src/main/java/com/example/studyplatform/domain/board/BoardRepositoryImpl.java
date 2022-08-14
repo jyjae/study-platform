@@ -30,7 +30,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
 
     @Override
     public Slice<BoardDto> findAllByCondition(Long cursorId, BoardReadCondition condition, Pageable pageable) {
-
+        QBoard board = QBoard.board;
         QProjectPost projectPost = QProjectPost.projectPost;
         QStudyBoard studyBoard = QStudyBoard.studyBoard;
         QProjectOrganization organization = QProjectOrganization.projectOrganization;
@@ -43,7 +43,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
                 .leftJoin(studyBoard.studyTechStacks, studyTechStack)
                 .leftJoin(projectPost.organizations, organization)
                 .distinct()
-                .where(eqType(condition.getDType()), eqCity(condition.getCity()), eqCursorEndDate(cursorId)
+                .where(eqType(condition.getDType()), eqCity(condition.getCity()), eqCursorId(cursorId)
                 ,eqTechIds(condition.getTechIds()), eqCareerStatus(condition.getCareerStatus()))
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
@@ -74,7 +74,6 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
     }
 
     private BooleanExpression eqTechId(Long techId) {
-        //return QTechStack.techStack.id.eq(techId);
         return Expressions.anyOf(QProjectOrganization.projectOrganization.techStack.id.eq(techId),
                 QStudyTechStack.studyTechStack.techStack.id.eq(techId));
     }
@@ -88,7 +87,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
         return null;
     }
 
-    private BooleanExpression eqCursorEndDate(Long cursorId) {
+    private BooleanExpression eqCursorId(Long cursorId) {
         if (cursorId != null) {
             return board.id.gt(cursorId);
         }
