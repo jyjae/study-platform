@@ -5,7 +5,6 @@ import com.example.studyplatform.domain.study.StudyRepository;
 import com.example.studyplatform.domain.studyTarget.StudyTarget;
 import com.example.studyplatform.domain.studyTarget.StudyTargetRepository;
 import com.example.studyplatform.dto.response.Response;
-import com.example.studyplatform.dto.study.StudyResponse;
 import com.example.studyplatform.dto.studyTarget.PostStudyTargetRequest;
 import com.example.studyplatform.dto.studyTarget.PutStudyTargetRequest;
 import com.example.studyplatform.dto.studyTarget.StudyTargetResponse;
@@ -25,8 +24,8 @@ public class StudyTargetService {
     private final StudyRepository studyRepository;
     private final StudyTargetRepository studyTargetRepository;
 
-    public List<StudyTargetResponse> list(){
-        List<StudyTarget> list = studyTargetRepository.findAll();
+    public List<StudyTargetResponse> list(Long studyId){
+        List<StudyTarget> list = studyTargetRepository.findAllByStudyId(studyId);
 
         return list.stream().map(studyTarget -> studyTarget.result()).collect(Collectors.toList());
     }

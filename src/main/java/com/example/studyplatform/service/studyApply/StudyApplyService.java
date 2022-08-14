@@ -9,13 +9,10 @@ import com.example.studyplatform.domain.user.User;
 import com.example.studyplatform.dto.studyApply.PostStudyApplyRequest;
 import com.example.studyplatform.dto.studyApply.PutStudyApplyRequest;
 import com.example.studyplatform.dto.studyApply.StudyApplyResponse;
-import com.example.studyplatform.dto.studyBoard.StudyBoardResponse;
 import com.example.studyplatform.exception.StudyApplyNotFoundException;
 import com.example.studyplatform.exception.StudyBoardNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service

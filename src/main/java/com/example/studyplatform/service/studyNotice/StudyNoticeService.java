@@ -26,8 +26,8 @@ public class StudyNoticeService {
     private final StudyRepository studyRepository;
     private final StudyNoticeRepository studyNoticeRepository;
 
-    public List<StudyNoticeResponse> list() {
-        List<StudyNotice> studyNotices = studyNoticeRepository.findAll();
+    public List<StudyNoticeResponse> list(Long studyId) {
+        List<StudyNotice> studyNotices = studyNoticeRepository.findAllByStudyId(studyId);
 
         return studyNotices.stream().map(i -> i.result()).collect(Collectors.toList());
     }

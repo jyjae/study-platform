@@ -7,7 +7,6 @@ import com.example.studyplatform.domain.project.projectPost.QProjectPost;
 import com.example.studyplatform.domain.studyBoard.QStudyBoard;
 import com.example.studyplatform.domain.studyBoard.StudyBoard;
 import com.example.studyplatform.domain.studyTechStack.QStudyTechStack;
-import com.example.studyplatform.domain.techStack.QTechStack;
 import com.example.studyplatform.dto.board.BoardDto;
 import com.example.studyplatform.dto.board.BoardReadCondition;
 import com.example.studyplatform.dto.board.BoardProjectDto;

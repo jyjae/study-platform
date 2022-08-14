@@ -17,7 +17,7 @@ public class PutCalenderRequest {
     private LocalDateTime endDate;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private boolean alarm;
-    private boolean online;
+    private boolean isAlarm;
+    private boolean isOnline;
     private Set<Long> attends;
 }

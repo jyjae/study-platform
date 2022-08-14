@@ -16,9 +16,11 @@ public class StudyNoticeController {
 
     private final StudyNoticeService studyNoticeService;
 
-    @GetMapping()
-    public Response list(){
-        return Response.success(studyNoticeService.list());
+    @GetMapping("/{studyId}")
+    public Response list(
+            @PathVariable Long studyId
+    ){
+        return Response.success(studyNoticeService.list(studyId));
     }
 
     @PostMapping("/{studyId}")
@@ -30,7 +32,7 @@ public class StudyNoticeController {
         return Response.success(studyNoticeService.create(studyId, user, req));
     }
 
-    @PutMapping("/{studyNoticeId}")
+    @PatchMapping("/{studyNoticeId}")
     public Response update(
             @PathVariable Long studyNoticeId,
             @AuthenticationPrincipal User user,
