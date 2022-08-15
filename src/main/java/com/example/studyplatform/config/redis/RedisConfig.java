@@ -15,16 +15,14 @@ public class RedisConfig {
     메시지 발행이 오면 Listener가 처리함
      */
     @Bean
-    public RedisMessageListenerContainer redisMessageListenerContainer(
-            RedisConnectionFactory connectionFactory
-    ) {
+    public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory connectionFactory) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         return container;
     }
 
     /*
-    어플리케이션에서 사용할 redisTemplate 설정
+    pub/sub 통신에 사용할 redisTemplate 설정
      */
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
