@@ -20,6 +20,7 @@ public class ChatRoomUser extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 채팅방 주인
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
@@ -27,7 +28,7 @@ public class ChatRoomUser extends BaseTimeEntity {
     private ChatRoom chatRoom;
 
     @Builder
-    public ChatRoomUser(User user, ChatRoom chatRoom){
+    public ChatRoomUser(User user ,ChatRoom chatRoom){
         this.user = user;
         this.chatRoom = chatRoom;
     }
