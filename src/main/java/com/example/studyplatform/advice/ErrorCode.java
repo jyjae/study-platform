@@ -27,7 +27,11 @@ public enum ErrorCode {
     PROJECT_ORGANIZATION_NOT_FOUND(-1010, "해당 프로젝트 인원은 존재하지 않습니다."),
 
 
-    COMMENT_NOT_FOUND(-1300, "해당 댓글은 존재하지 않습니다.");
+    COMMENT_NOT_FOUND(-1300, "해당 댓글은 존재하지 않습니다."),
+
+    CHATROOM_CANNOT_MAKE_ROOM_ALONE(-1320, "일대일 방에는 두 명의 유저가 있어야합니다."),
+    CHATROOM_GROUP_NOT_CONTAINS_USER(-1321, "그룹 채팅방 생성에는 유저 아이디도 필요합니다."),
+    CHATROOM_NOT_FOUND(-1322, "채팅방을 찾을 수 없습니다");
 
     private final int code;
     private final String message;

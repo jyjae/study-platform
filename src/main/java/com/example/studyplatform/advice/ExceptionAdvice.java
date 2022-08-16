@@ -11,6 +11,24 @@ import static com.example.studyplatform.advice.ErrorCode.*;
 
 @RestControllerAdvice
 public class ExceptionAdvice {
+    @ExceptionHandler(ChatRoomCannotMakeRoomAloneException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response chatRoomCannotMakeRoomAloneException(ChatRoomCannotMakeRoomAloneException e) {
+        return Response.failure(CHATROOM_CANNOT_MAKE_ROOM_ALONE.getCode(), CHATROOM_CANNOT_MAKE_ROOM_ALONE.getMessage());
+    }
+
+    @ExceptionHandler(ChatRoomGroupNotContainsUserException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response chatRoomGroupNotContainsUserException(ChatRoomGroupNotContainsUserException e) {
+        return Response.failure(CHATROOM_GROUP_NOT_CONTAINS_USER.getCode(), CHATROOM_GROUP_NOT_CONTAINS_USER.getMessage());
+    }
+
+    @ExceptionHandler(ChatRoomNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response chatRoomNotFoundException(ChatRoomNotFoundException e) {
+        return Response.failure(CHATROOM_NOT_FOUND.getCode(), CHATROOM_NOT_FOUND.getMessage());
+    }
+
     @ExceptionHandler(CommentNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Response commentNotFoundException(CommentNotFoundException e) {
