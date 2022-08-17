@@ -29,6 +29,12 @@ public class ExceptionAdvice {
         return Response.failure(CHATROOM_NOT_FOUND.getCode(), CHATROOM_NOT_FOUND.getMessage());
     }
 
+    @ExceptionHandler(ChatMessageNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response chatMessageNotFound(ChatMessageNotFoundException e) {
+        return Response.failure(CHAT_MESSAGE_NOT_FOUND.getCode(), CHAT_MESSAGE_NOT_FOUND.getMessage());
+    }
+
     @ExceptionHandler(CommentNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Response commentNotFoundException(CommentNotFoundException e) {
