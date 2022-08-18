@@ -24,7 +24,7 @@ public class RedisRepository {
      * roomId, userId, 안 읽은 메세지 갯수
      */
     @Resource(name = "redisTemplate")
-    private HashOperations<Long, Long, Integer> chatRoomUnReadMessageInfo;
+    private HashOperations<String, Long, Integer> chatRoomUnReadMessageInfo;
 
     /**
      * 상대 정보는 sessionId 로 저장, 나의 정보는 userId에 저장
@@ -56,17 +56,17 @@ public class RedisRepository {
 
     // step2
     // 채팅방에서 사용자가 읽지 않은 메세지의 갯수 초기화
-    public void initChatRoomMessageInfo(Long chatRoomId, Long userId) {
+    public void initChatRoomMessageInfo(String chatRoomId, Long userId) {
         chatRoomUnReadMessageInfo.put(chatRoomId, userId, 0);
     }
 
     // 채팅방에서 사용자가 읽지 않은 메세지의 갯수 추가
     public void addChatRoomMessageCount(Long chatRoomId, Long userId) {
-        chatRoomUnReadMessageInfo.put(chatRoomId, userId, chatRoomUnReadMessageInfo.get(chatRoomId, userId) + 1);
+        chatRoomUnReadMessageInfo.put(chatRoomId+"", userId, chatRoomUnReadMessageInfo.get(chatRoomId+"", userId) + 1);
     }
 
     //
-    public int getChatRoomMessageCount(Long chatRoomId, Long userId) {
+    public int getChatRoomMessageCount(String chatRoomId, Long userId) {
         return chatRoomUnReadMessageInfo.get(chatRoomId, userId);
     }
 
