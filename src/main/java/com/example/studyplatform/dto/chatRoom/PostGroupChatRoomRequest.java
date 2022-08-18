@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class PostGroupChatRoomRequest {
+    private Long studyId;
     private Long chatRoomId;
     private List<Long> anotherUserIds;
 }

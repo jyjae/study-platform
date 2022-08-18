@@ -1,5 +1,7 @@
 package com.example.studyplatform.domain.chat;
 
+import com.example.studyplatform.constant.Status;
+import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.chatRoom.ChatRoom;
 import com.example.studyplatform.domain.user.User;
 import lombok.AccessLevel;
@@ -12,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class ChatMessage {
+public class ChatMessage extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +26,9 @@ public class ChatMessage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ChatRoom chatRoom;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Builder
     public ChatMessage(User user, ChatRoom chatRoom, String message) {
