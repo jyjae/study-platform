@@ -1,5 +1,6 @@
 package com.example.studyplatform.domain.chatRoom;
 
+import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.user.User;
 import lombok.AccessLevel;
@@ -27,9 +28,21 @@ public class ChatRoomUser extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private ChatRoom chatRoom;
 
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @Builder
-    public ChatRoomUser(User user ,ChatRoom chatRoom){
+    public ChatRoomUser(User user ,String name,  ChatRoom chatRoom){
         this.user = user;
+        this.name = name;
         this.chatRoom = chatRoom;
+        this.status = Status.ACTIVE;
+    }
+
+    public ChatRoomUser inActive() {
+        this.status = Status.INACTIVE;
+        return this;
     }
 }

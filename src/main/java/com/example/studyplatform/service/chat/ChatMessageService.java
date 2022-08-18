@@ -36,7 +36,7 @@ public class ChatMessageService {
         // 그룹채팅은 해시코드가 존재하지 않고 일대일 채팅은 해시코드가 존재한다.
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(ChatRoomNotFoundException::new);
         if (chatRoom.getRoomHashCode() != 0) {
-            redisRepository.initChatRoomMessageInfo(chatRoom.getId(), userId);
+            redisRepository.initChatRoomMessageInfo(chatRoom.getId()+"", userId);
         }
     }
 
@@ -84,7 +84,7 @@ public class ChatMessageService {
         if (!redisRepository.existChatRoomUserInfo(otherUserId) || !redisRepository.getUserEnterRoomId(otherUserId).equals(roomId)) {
 
             redisRepository.addChatRoomMessageCount(roomId, otherUserId);
-            int unReadMessageCount = redisRepository.getChatRoomMessageCount(roomId, otherUserId);
+            int unReadMessageCount = redisRepository.getChatRoomMessageCount(roomId+"", otherUserId);
 
             String topic = channelTopic.getTopic();
 
