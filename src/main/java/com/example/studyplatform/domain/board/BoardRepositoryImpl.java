@@ -7,12 +7,14 @@ import com.example.studyplatform.domain.project.projectPost.QProjectPost;
 import com.example.studyplatform.domain.studyBoard.QStudyBoard;
 import com.example.studyplatform.domain.studyBoard.StudyBoard;
 import com.example.studyplatform.domain.studyTechStack.QStudyTechStack;
+import com.example.studyplatform.domain.user.QUser;
 import com.example.studyplatform.dto.board.BoardDto;
 import com.example.studyplatform.dto.board.BoardReadCondition;
 import com.example.studyplatform.dto.board.BoardProjectDto;
 import com.example.studyplatform.dto.board.BoardStudyDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +29,40 @@ import static com.example.studyplatform.domain.board.QBoard.board;
 @RequiredArgsConstructor
 public class BoardRepositoryImpl implements BoardRepositoryCustom{
     private final JPAQueryFactory jpaQueryFactory;
+
+    @Override
+    public List<BoardDto> findScrapBoardsByUserId(Long userId) {
+        QBoard board = QBoard.board;
+        QProjectPost projectPost = QProjectPost.projectPost;
+        QStudyBoard studyBoard = QStudyBoard.studyBoard;
+        QProjectOrganization organization = QProjectOrganization.projectOrganization;
+        QStudyTechStack studyTechStack = QStudyTechStack.studyTechStack;
+        QUser user = QUser.user;
+
+        // 유저의 스크랩 게시글 최신순 가져오기
+        JPAQuery<Board> query = jpaQueryFactory
+                .select(board)
+                .from(user)
+                .leftJoin(user.scrapBoards, board)
+                .where(user.id.eq(userId))
+                .orderBy(board.createdAt.desc());
+
+        // 스크랩 게시글 프로젝트와 스터디 left outer join 후 dto로 변환
+        List<Board> result = query
+                .leftJoin(projectPost).on(projectPost.eq(board))
+                .leftJoin(studyBoard).on(studyBoard.eq(board))
+                .leftJoin(studyBoard.studyTechStacks, studyTechStack)
+                .leftJoin(projectPost.organizations, organization)
+                .distinct().fetch();
+
+        return result.stream().map(i -> {
+            if (i instanceof ProjectPost) {
+                return new BoardProjectDto((ProjectPost) i);
+            } else {
+                return new BoardStudyDto((StudyBoard) i);
+            }
+        }).collect(Collectors.toList());
+    }
 
     @Override
     public Slice<BoardDto> findAllByCondition(Long cursorId, BoardReadCondition condition, Pageable pageable) {
