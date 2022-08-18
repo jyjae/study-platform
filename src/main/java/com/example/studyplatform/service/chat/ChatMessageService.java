@@ -85,7 +85,7 @@ public class ChatMessageService {
 
     //안읽은 메세지 업데이트
     private void updateUnReadMessageCount(ChatMessageRequest chatMessageRequest) {
-        Long otherUserId = chatMessageRequest.getOtherUserIds();
+        Long otherUserId = 1L;
         Long roomId = chatMessageRequest.getRoomId();
 
         if (!redisRepository.existChatRoomUserInfo(otherUserId) || !redisRepository.getUserEnterRoomId(otherUserId).equals(roomId)) {

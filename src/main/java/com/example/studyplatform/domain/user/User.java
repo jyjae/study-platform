@@ -2,6 +2,7 @@ package com.example.studyplatform.domain.user;
 
 import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.BaseTimeEntity;
+import com.example.studyplatform.domain.board.Board;
 import com.example.studyplatform.domain.career.Career;
 import com.example.studyplatform.domain.studyBoard.StudyBoard;
 import com.example.studyplatform.domain.studyNotice.StudyNotice;
@@ -65,6 +66,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StudyBoard> studyBoards = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    public List<Board> scrapBoards = new ArrayList<>();
+
 //    public List<String> getRole(){
 //        return this.roles.stream()
 //                .map(Role::getKey)
@@ -81,6 +85,14 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     public void addTechStack(TechStack techStack) {
         this.techStacks.add(techStack);
+    }
+
+    public void addScrapBoard(Board board) {
+        this.scrapBoards.add(board);
+    }
+
+    public void deleteScrapBoard(Board board) {
+        this.scrapBoards.remove(board);
     }
 
     // List 형식 매개변수 빼야됨 -> add 함수 이용
