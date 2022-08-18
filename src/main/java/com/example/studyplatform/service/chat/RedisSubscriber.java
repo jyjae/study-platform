@@ -1,5 +1,7 @@
 package com.example.studyplatform.service.chat;
 
+import com.example.studyplatform.dto.alarm.AlarmRequest;
+import com.example.studyplatform.dto.alarm.AlarmResponse;
 import com.example.studyplatform.dto.chat.ChatMessageRequest;
 import com.example.studyplatform.exception.ChatMessageNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class RedisSubscriber implements MessageListener {
+    private final RedisRepository redisRepository;
     private final ObjectMapper objectMapper;
     private final RedisTemplate redisTemplate;
     private final SimpMessageSendingOperations messagingTemplate;
@@ -27,15 +30,22 @@ public class RedisSubscriber implements MessageListener {
         try {
             // redis에서 발행된 데이터를 받아 역직렬화
             String publishMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
-            // ChatMessage 객체로 맵핑
-            ChatMessageRequest roomMessage = objectMapper.readValue(publishMessage, ChatMessageRequest.class);
 
-            if (roomMessage.getType().equals(ChatMessageRequest.MessageType.TALK)){
-                // Websocket 구독자에게 채팅 메시지 전송
-                messagingTemplate.convertAndSend("/sub/chat/room" + roomMessage.getRoomId(), roomMessage);
-            } else {
-                // TODO : 알림 처리 로직
+            // 만약 ChatMessageRequest 클래스로 넘어왔다면
+            if (objectMapper.canSerialize(ChatMessageRequest.class)) {
+                // ChatMessage 객체로 맵핑
+                ChatMessageRequest roomMessage = objectMapper.readValue(publishMessage, ChatMessageRequest.class);
+
+                if (roomMessage.getType().equals(ChatMessageRequest.MessageType.TALK)){
+                    // Websocket 구독자에게 채팅 메시지 전송
+                    messagingTemplate.convertAndSend("/sub/chat/room/" + roomMessage.getRoomId(), roomMessage);
+                }
+
+            }else{   // 만약 AlarmRequest 클래스로 넘어왔다면
+                AlarmRequest alarmRequest = objectMapper.readValue(publishMessage, AlarmRequest.class);
+                messagingTemplate.convertAndSend("/sub/chat/room/" + alarmRequest.getOtherUserId(), AlarmResponse.toDto(alarmRequest));
             }
+
         } catch (Exception e) {
             throw new ChatMessageNotFoundException();
         }

@@ -31,6 +31,4 @@ public class ChatMessage {
         this.chatRoom = chatRoom;
         this.message = message;
     }
-
-
 }

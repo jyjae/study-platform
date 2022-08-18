@@ -1,18 +1,25 @@
 package com.example.studyplatform.service.comment;
 
 import com.example.studyplatform.constant.Status;
+import com.example.studyplatform.domain.alarm.Alarm;
+import com.example.studyplatform.domain.alarm.AlarmRepository;
 import com.example.studyplatform.domain.board.Board;
 import com.example.studyplatform.domain.board.BoardRepository;
 import com.example.studyplatform.domain.comment.Comment;
 import com.example.studyplatform.domain.comment.CommentRepository;
 import com.example.studyplatform.domain.user.User;
+import com.example.studyplatform.domain.user.UserRepository;
+import com.example.studyplatform.dto.alarm.AlarmRequest;
 import com.example.studyplatform.dto.comment.CommentResponse;
 import com.example.studyplatform.dto.comment.GetCommentResponse;
 import com.example.studyplatform.dto.comment.PostCommentRequest;
 import com.example.studyplatform.dto.comment.PutCommentRequest;
 import com.example.studyplatform.exception.CommentNotFoundException;
 import com.example.studyplatform.exception.StudyBoardNotFoundException;
+import com.example.studyplatform.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +30,10 @@ import java.util.stream.Collectors;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
+    private final AlarmRepository alarmRepository;
+    private final RedisTemplate redisTemplate;
+    private final ChannelTopic channelTopic;
+    private final UserRepository userRepository;
 
     public CommentResponse createComment(
             PostCommentRequest req,
@@ -111,4 +122,25 @@ public class CommentService {
                 .orElseThrow(StudyBoardNotFoundException::new);
     }
 
+
+    public void sendCommentAlarm(
+            PostCommentRequest req,
+            User user
+    ) {
+        // 1. 글 작성자 정보를 가져옴
+        Long postUserId = getBoard(req.getBoardId()).getUser().getId();
+        User postUser = userRepository.findByIdAndStatus(postUserId, Status.ACTIVE).orElseThrow(UserNotFoundException::new);
+        String topic = channelTopic.getTopic();
+        String title = user.getNickname() + "님이 댓글을 남겼습니다.";
+
+        // 2. 알림 엔티티 정보 저장
+        Alarm alarm = alarmRepository.save(Alarm.builder()
+                .title(title)
+                .url("boardURL")
+                .user(postUser)
+                .build());
+
+        // 3. 레디스로 발행
+        redisTemplate.convertAndSend(topic, AlarmRequest.toDto(alarm, postUserId));
+    }
 }

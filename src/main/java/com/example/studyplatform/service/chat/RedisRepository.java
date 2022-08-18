@@ -44,6 +44,11 @@ public class RedisRepository {
         return chatRoomInfo.hasKey(ENTER_INFO, userId);
     }
 
+    // 사용자가 특정 채팅방에 입장해 있는지 확인
+    public boolean existUserRoomInfo(Long chatRoomId, Long userId) {
+        return getUserEnterRoomId(userId).equals(chatRoomId);
+    }
+
     // 사용자가 입장해 있는 채팅방 ID 조회
     public Long getUserEnterRoomId(Long userId) {
         return chatRoomInfo.get(ENTER_INFO, userId);
