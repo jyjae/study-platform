@@ -49,7 +49,7 @@ public class ChatRoomService {
     @Transactional(rollbackOn = Exception.class)
     public Long createChatRoom(PostOneToOneChatRoomRequest req, User user) {
         // 1. 상대방 존재 체크
-        User anotherUser = userRepository.findByIdAndStatus(user.getId(), Status.ACTIVE)
+        User anotherUser = userRepository.findByIdAndStatus(req.getAnotherUserId(), Status.ACTIVE)
                 .orElseThrow(UserNotFoundException::new);
 
         // 2. roomHashCode 만들기
@@ -177,6 +177,7 @@ public class ChatRoomService {
                 .findAllByUserIdAndStatus(user.getId(),Status.ACTIVE, pageable);
 
         for(ChatRoomUser chatRoomUser : chatRoomUsers) {
+            if(chatRoomUser.getChatRoom().getRoomHashCode() == 0) continue;
             GetOneToOneChatRoomResponse resDto = createChatRoomDto(chatRoomUser);
             resDtos.add(resDto);
         }
@@ -204,7 +205,8 @@ public class ChatRoomService {
             lastTime = messages.get(0).getCreatedAt();
         }
 
-        int unReadMessageCount = redisRepository.getChatRoomMessageCount(roomId, chatRoomUser.getUser().getId());
+        int unReadMessageCount = 1;
+                //redisRepository.getChatRoomMessageCount(roomId, chatRoomUser.getUser().getId());
         long dayBeforeTime = ChronoUnit.MINUTES.between(lastTime, LocalDateTime.now());
         String dayBefore = Calculator.time(dayBeforeTime);
 
@@ -283,7 +285,7 @@ public class ChatRoomService {
     }
 
     public GetRoomOtherUserInfoResponse getOtherUserInfo(Long roomId, User myUser) {
-        ChatRoom chatRoom = chatRoomRepository.findByIdAndStatus(roomId, Status.ACTIVE)
+        ChatRoom chatRoom = chatRoomRepository.findByIdAndStatusAndRoomHashCodeGreaterThan(roomId, Status.ACTIVE, 0)
                 .orElseThrow(ChatRoomNotFoundException::new);
 
 
@@ -306,7 +308,7 @@ public class ChatRoomService {
     }
 
     public List<GetRoomOtherUserInfoResponse> getOtherUserInfos(Long studyId, User myUser) {
-        ChatRoom chatRoom = chatRoomRepository.findByStudyIdAndStatus(studyId, Status.ACTIVE)
+        ChatRoom chatRoom = chatRoomRepository.findByStudyIdAndStatusAndRoomHashCode(studyId, Status.ACTIVE, 0)
                 .orElseThrow(ChatRoomNotFoundException::new);
 
         List<ChatRoomUser> users = chatRoom.getChatRoomUsers();
@@ -324,6 +326,7 @@ public class ChatRoomService {
     }
 
     // 채팅방 삭제
+    @Transactional(rollbackOn = Exception.class)
     public void deleteChatRoom(Long roomId, User user) {
         ChatRoom chatRoom = chatRoomRepository.findByIdAndStatus(roomId, Status.ACTIVE)
                 .orElseThrow(ChatRoomNotFoundException::new);
@@ -335,5 +338,7 @@ public class ChatRoomService {
         } else if(chatRoom.getChatRoomUsers().size() == 1) {
             chatRoomRepository.save(chatRoom.inActive());
         }
+
+        chatRoomRepository.save(chatRoom.inActive());
     }
 }
