@@ -36,7 +36,7 @@ public class ChatRoomController {
     @GetMapping("/group/{study-id}")
     public Response getGroupChatRooms(
             @AuthenticationPrincipal User user,
-            @RequestParam(name = "study-id") Long studyId
+            @PathVariable(name = "study-id") Long studyId
     ) {
         return Response.success(chatRoomService.getGroupChatRooms(user, studyId));
     }
@@ -84,7 +84,7 @@ public class ChatRoomController {
         return Response.success(chatRoomService.getPreviousChatMessage(roomId, user));
     }
 
-    // 이전 일대일 채팅 메시지 불러오기
+
     @GetMapping("/otherUserInfo/{roomId}")
     public Response getOtherUserInfo(
             @PathVariable Long roomId,
@@ -94,7 +94,7 @@ public class ChatRoomController {
     }
 
     // 이전 그룹 채팅 메시지 불러오기
-    @GetMapping("/otherUserInfo/{studyId}")
+    @GetMapping("/otherUserInfos/{studyId}")
     public Response getOtherUserInfos(
             @PathVariable Long studyId,
             @AuthenticationPrincipal User user
@@ -106,7 +106,7 @@ public class ChatRoomController {
     //채팅방 삭제
     @PatchMapping("/{roomId}")
     public Response deleteChatRoom(
-           @RequestParam Long roomId,
+           @PathVariable Long roomId,
            @AuthenticationPrincipal User user
     ) {
         chatRoomService.deleteChatRoom(roomId, user);
