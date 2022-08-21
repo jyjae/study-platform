@@ -112,7 +112,7 @@ public class ChatMessageService {
     // 1:1 채팅, 그룹 채팅 알람 전송
     public void sendChatAlarm(ChatMessageRequest chatMessageRequest, User user) {
         Set<Long> otherUserIds = chatMessageRequest.getOtherUserIds();
-        otherUserIds.forEach(i -> messageIfExistsOtherUser(chatMessageRequest, user, i));
+        otherUserIds.forEach(otherUserId -> messageIfExistsOtherUser(chatMessageRequest, user, otherUserId));
     }
 
     private void messageIfExistsOtherUser(ChatMessageRequest req, User user, Long otherUserId) {
