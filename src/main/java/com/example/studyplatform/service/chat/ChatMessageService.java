@@ -19,11 +19,7 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,8 +63,9 @@ public class ChatMessageService {
 
         chatMessageRepository.save(chatMessage);
         String topic = channelTopic.getTopic();
-        String createdAt = getCurrentTime();
-        chatMessageRequest.setCreatedAt(createdAt);
+
+        // ChatMessageRequest에 유저정보, 현재시간 저장
+        chatMessageRequest.setNickName(user.getNickname());
         chatMessageRequest.setUserId(user.getId());
 
         if (chatMessageRequest.getType() == ChatMessageRequest.MessageType.TALK) {
@@ -80,15 +77,6 @@ public class ChatMessageService {
             redisTemplate.convertAndSend(topic, chatMessageRequest);
             redisTemplate.opsForHash();
         }
-    }
-
-    //현재시간 추출 메소드
-    private String getCurrentTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
-        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-        return sdf.format(date);
     }
 
     //안읽은 메세지 업데이트
