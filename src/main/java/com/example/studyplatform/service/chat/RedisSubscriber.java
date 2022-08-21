@@ -3,6 +3,7 @@ package com.example.studyplatform.service.chat;
 import com.example.studyplatform.dto.alarm.AlarmRequest;
 import com.example.studyplatform.dto.alarm.AlarmResponse;
 import com.example.studyplatform.dto.chat.ChatMessageRequest;
+import com.example.studyplatform.dto.chat.GetChatMessageResponse;
 import com.example.studyplatform.exception.ChatMessageNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +36,10 @@ public class RedisSubscriber implements MessageListener {
                 // ChatMessage 객체로 맵핑
                 ChatMessageRequest roomMessage = objectMapper.readValue(publishMessage, ChatMessageRequest.class);
 
+                GetChatMessageResponse chatMessageResponse = new GetChatMessageResponse(roomMessage);
+
                 // Websocket 구독자에게 채팅 메시지 전송
-                messagingTemplate.convertAndSend("/sub/chat/room/" + roomMessage.getRoomId(), roomMessage);
+                messagingTemplate.convertAndSend("/sub/chat/room/" + roomMessage.getRoomId(), chatMessageResponse);
 
 
             } else {   // 만약 AlarmRequest 클래스로 넘어왔다면
