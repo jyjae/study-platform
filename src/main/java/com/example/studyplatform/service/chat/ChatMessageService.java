@@ -10,7 +10,6 @@ import com.example.studyplatform.domain.chatRoom.ChatRoomRepository;
 import com.example.studyplatform.domain.user.User;
 import com.example.studyplatform.domain.user.UserRepository;
 import com.example.studyplatform.dto.alarm.AlarmRequest;
-import com.example.studyplatform.dto.alarm.AlarmResponse;
 import com.example.studyplatform.dto.chat.ChatMessageRequest;
 import com.example.studyplatform.exception.ChatRoomNotFoundException;
 import com.example.studyplatform.exception.UserNotFoundException;
@@ -21,7 +20,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Set;
+import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,11 +40,14 @@ public class ChatMessageService {
 
     // 채팅방 입장
     public void enter(Long userId, Long roomId) {
+
+        // 그룹채팅은 해시코드가 존재하지 않고 일대일 채팅은 해시코드가 존재한다.
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(ChatRoomNotFoundException::new);
+
         // 채팅방에 들어온 정보를 Redis 저장
         redisRepository.userEnterRoomInfo(userId, roomId);
 
         // 그룹채팅은 해시코드가 존재하지 않고 일대일 채팅은 해시코드가 존재한다.
-        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(ChatRoomNotFoundException::new);
         if (chatRoom.getRoomHashCode() != 0) {
             redisRepository.initChatRoomMessageInfo(chatRoom.getId()+"", userId);
         }
@@ -67,10 +73,12 @@ public class ChatMessageService {
 
         if (chatMessageRequest.getType() == ChatMessageRequest.MessageType.TALK) {
             // 일대일 채팅일 경우
+            redisTemplate.convertAndSend(topic, chatMessageRequest);
             updateUnReadMessageCount(chatMessageRequest);
         } else {
             // 그륩 채팅일 경우
             redisTemplate.convertAndSend(topic, chatMessageRequest);
+            redisTemplate.opsForHash();
         }
     }
 
@@ -85,10 +93,10 @@ public class ChatMessageService {
 
     //안읽은 메세지 업데이트
     private void updateUnReadMessageCount(ChatMessageRequest chatMessageRequest) {
-        Long otherUserId = 1L;
-        Long roomId = chatMessageRequest.getRoomId();
+        Long otherUserId = chatMessageRequest.getOtherUserIds().stream().collect(Collectors.toList()).get(0);
+        String roomId = String.valueOf(chatMessageRequest.getRoomId());
 
-        if (!redisRepository.existChatRoomUserInfo(otherUserId) || !redisRepository.getUserEnterRoomId(otherUserId).equals(roomId)) {
+        if (!redisRepository.existChatRoomUserInfo(otherUserId) || !redisRepository.getUserEnterRoomId(otherUserId).equals(chatMessageRequest.getRoomId())) {
 
             redisRepository.addChatRoomMessageCount(roomId, otherUserId);
             int unReadMessageCount = redisRepository.getChatRoomMessageCount(roomId+"", otherUserId);
