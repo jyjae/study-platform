@@ -14,6 +14,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -30,9 +33,10 @@ public class RedisSubscriber implements MessageListener {
         try {
             // redis에서 발행된 데이터를 받아 역직렬화
             String publishMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
+            ChatMessageRequest in = objectMapper.readValue(publishMessage, ChatMessageRequest.class);
 
             // 만약 ChatMessageRequest 클래스로 넘어왔다면
-            if (objectMapper.canSerialize(ChatMessageRequest.class)) {
+            if (in.getType() != null) {
                 // ChatMessage 객체로 맵핑
                 ChatMessageRequest roomMessage = objectMapper.readValue(publishMessage, ChatMessageRequest.class);
 
