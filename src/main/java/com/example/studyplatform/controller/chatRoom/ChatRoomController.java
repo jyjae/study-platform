@@ -1,7 +1,6 @@
 package com.example.studyplatform.controller.chatRoom;
 
 import com.example.studyplatform.domain.user.User;
-import com.example.studyplatform.dto.chatRoom.GetOneToOneChatRoomResponse;
 import com.example.studyplatform.dto.chatRoom.PostGroupChatRoomRequest;
 import com.example.studyplatform.dto.chatRoom.PostOneToOneChatRoomRequest;
 import com.example.studyplatform.dto.response.Response;
@@ -28,8 +27,7 @@ public class ChatRoomController {
     public Response getOneToOneChatRooms(
             @AuthenticationPrincipal User user,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
-            ) {
-        // TODO : 로직 작성
+    ) {
         return Response.success(chatRoomService.getOneToOneChatRooms(user, pageable));
     }
 
@@ -101,7 +99,6 @@ public class ChatRoomController {
     ) {
         return Response.success(chatRoomService.getOtherUserInfos(studyId, user));
     }
-
 
     //채팅방 삭제
     @PatchMapping("/{roomId}")

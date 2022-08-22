@@ -10,7 +10,6 @@ import com.example.studyplatform.domain.chatRoom.ChatRoomRepository;
 import com.example.studyplatform.domain.user.User;
 import com.example.studyplatform.domain.user.UserRepository;
 import com.example.studyplatform.dto.alarm.AlarmRequest;
-import com.example.studyplatform.dto.alarm.AlarmResponse;
 import com.example.studyplatform.dto.chat.ChatMessageRequest;
 import com.example.studyplatform.exception.ChatRoomNotFoundException;
 import com.example.studyplatform.exception.UserNotFoundException;
@@ -20,8 +19,8 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,11 +36,14 @@ public class ChatMessageService {
 
     // 채팅방 입장
     public void enter(Long userId, Long roomId) {
+
+        // 그룹채팅은 해시코드가 존재하지 않고 일대일 채팅은 해시코드가 존재한다.
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(ChatRoomNotFoundException::new);
+
         // 채팅방에 들어온 정보를 Redis 저장
         redisRepository.userEnterRoomInfo(userId, roomId);
 
         // 그룹채팅은 해시코드가 존재하지 않고 일대일 채팅은 해시코드가 존재한다.
-        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(ChatRoomNotFoundException::new);
         if (chatRoom.getRoomHashCode() != 0) {
             redisRepository.initChatRoomMessageInfo(chatRoom.getId()+"", userId);
         }
@@ -61,34 +63,28 @@ public class ChatMessageService {
 
         chatMessageRepository.save(chatMessage);
         String topic = channelTopic.getTopic();
-        String createdAt = getCurrentTime();
-        chatMessageRequest.setCreatedAt(createdAt);
+
+        // ChatMessageRequest에 유저정보, 현재시간 저장
+        chatMessageRequest.setNickName(user.getNickname());
         chatMessageRequest.setUserId(user.getId());
 
         if (chatMessageRequest.getType() == ChatMessageRequest.MessageType.TALK) {
             // 일대일 채팅일 경우
+            redisTemplate.convertAndSend(topic, chatMessageRequest);
             updateUnReadMessageCount(chatMessageRequest);
         } else {
             // 그륩 채팅일 경우
             redisTemplate.convertAndSend(topic, chatMessageRequest);
+            redisTemplate.opsForHash();
         }
-    }
-
-    //현재시간 추출 메소드
-    private String getCurrentTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
-        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-        return sdf.format(date);
     }
 
     //안읽은 메세지 업데이트
     private void updateUnReadMessageCount(ChatMessageRequest chatMessageRequest) {
-        Long otherUserId = 1L;
-        Long roomId = chatMessageRequest.getRoomId();
+        Long otherUserId = chatMessageRequest.getOtherUserIds().stream().collect(Collectors.toList()).get(0);
+        String roomId = String.valueOf(chatMessageRequest.getRoomId());
 
-        if (!redisRepository.existChatRoomUserInfo(otherUserId) || !redisRepository.getUserEnterRoomId(otherUserId).equals(roomId)) {
+        if (!redisRepository.existChatRoomUserInfo(otherUserId) || !redisRepository.getUserEnterRoomId(otherUserId).equals(chatMessageRequest.getRoomId())) {
 
             redisRepository.addChatRoomMessageCount(roomId, otherUserId);
             int unReadMessageCount = redisRepository.getChatRoomMessageCount(roomId+"", otherUserId);
@@ -104,7 +100,7 @@ public class ChatMessageService {
     // 1:1 채팅, 그룹 채팅 알람 전송
     public void sendChatAlarm(ChatMessageRequest chatMessageRequest, User user) {
         Set<Long> otherUserIds = chatMessageRequest.getOtherUserIds();
-        otherUserIds.forEach(i -> messageIfExistsOtherUser(chatMessageRequest, user, i));
+        otherUserIds.forEach(otherUserId -> messageIfExistsOtherUser(chatMessageRequest, user, otherUserId));
     }
 
     private void messageIfExistsOtherUser(ChatMessageRequest req, User user, Long otherUserId) {

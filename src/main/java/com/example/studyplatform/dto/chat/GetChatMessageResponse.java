@@ -22,4 +22,11 @@ public class GetChatMessageResponse {
         this.message = chatMessage.getMessage();
         this.createdAt = chatMessage.getCreatedAt();
     }
+
+    public GetChatMessageResponse(ChatMessageRequest request) {
+        this.userId = request.getUserId();
+        this.nickname = request.getNickName();
+        this.message = request.getMessage();
+        this.createdAt = LocalDateTime.now(); // 현재시간 저장
+    }
 }

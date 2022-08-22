@@ -33,6 +33,21 @@ public class RedisRepository {
     @Resource(name = "redisTemplate")
     private HashOperations<String, String, Long> userInfo;
 
+    @Resource(name = "redisTemplate")
+    private HashOperations<String, Long, Long> test;
+
+    public void putTest() {
+        test.put("test", 1L, 1L);
+    }
+
+    public void getTest() {
+        test.get("test", 1L);
+    }
+
+    public void delTest() {
+        test.delete("test", 1L);
+    }
+
     // step1
     // 유저가 입장한 채팅방ID와 유저 세션ID 맵핑 정보 저장
     public void userEnterRoomInfo(Long userId, Long chatRoomId) {
@@ -66,8 +81,8 @@ public class RedisRepository {
     }
 
     // 채팅방에서 사용자가 읽지 않은 메세지의 갯수 추가
-    public void addChatRoomMessageCount(Long chatRoomId, Long userId) {
-        chatRoomUnReadMessageInfo.put(chatRoomId+"", userId, chatRoomUnReadMessageInfo.get(chatRoomId+"", userId) + 1);
+    public void addChatRoomMessageCount(String chatRoomId, Long userId) {
+        chatRoomUnReadMessageInfo.put(chatRoomId, userId, chatRoomUnReadMessageInfo.get(chatRoomId, userId) + 1);
     }
 
     //
