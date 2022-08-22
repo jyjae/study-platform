@@ -18,9 +18,8 @@ public class AlarmMessageController {
 
     // 채팅 알람
     @MessageMapping("/chat/alarm")
-    public void chatAlarm(ChatMessageRequest chatMessageRequest,
-                          @AuthenticationPrincipal User user) {
-        chatMessageService.sendChatAlarm(chatMessageRequest, user);
+    public void chatAlarm(ChatMessageRequest chatMessageRequest) {
+        chatMessageService.sendChatAlarm(chatMessageRequest);
     }
 
     // 댓글 알림
