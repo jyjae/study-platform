@@ -2,12 +2,14 @@ package com.example.studyplatform.domain.alarm;
 
 import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.dto.alarm.AlarmResponse;
-import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
+
 import static com.querydsl.core.types.Projections.constructor;
 
 import java.util.List;
@@ -21,13 +23,13 @@ public class CustomAlarmRepositoryImpl implements CustomAlarmRepository{
     public Slice<AlarmResponse> findAllByCursorId(Long cursorId, Pageable pageable) {
         QAlarm alarm = QAlarm.alarm;
 
-        JPAQuery<Alarm> query = jpaQueryFactory
+        JPQLQuery<Alarm> query = jpaQueryFactory
                 .selectFrom(alarm)
                 .where(alarm.status.eq(Status.ACTIVE))
                 .orderBy(alarm.id.desc());
 
         List<Alarm> result = query
-                .where(alarm.id.lt(cursorId))
+                .where(ltCursorId(cursorId))
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
 
@@ -40,6 +42,14 @@ public class CustomAlarmRepositoryImpl implements CustomAlarmRepository{
         }
 
         return new SliceImpl<>(content, pageable, hasNext);
+    }
+
+    private BooleanExpression ltCursorId(Long cursorId) {
+        QAlarm alarm = QAlarm.alarm;
+        if (cursorId != null) {
+            return alarm.id.lt(cursorId);
+        }
+        return null;
     }
 
     @Override

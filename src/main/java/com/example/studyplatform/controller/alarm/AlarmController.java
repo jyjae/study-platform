@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AlarmController {
     private final AlarmService alarmService;
 
-    @GetMapping("/{cursorId}")
+    @GetMapping(value = {"/{cursorId}", ""})
     public Response readAllByCursorId(
-            @PathVariable Long cursorId,
+            @PathVariable(required = false) Long cursorId,
             @PageableDefault(size = 8) Pageable pageable
     ) {
         return Response.success(alarmService.readAllByCursorId(cursorId, pageable));

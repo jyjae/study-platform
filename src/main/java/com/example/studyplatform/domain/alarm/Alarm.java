@@ -36,5 +36,6 @@ public class Alarm extends BaseTimeEntity {
         this.url = url;
         this.user = user;
         this.isRead = false;
+        this.status = Status.ACTIVE;
     }
 }
