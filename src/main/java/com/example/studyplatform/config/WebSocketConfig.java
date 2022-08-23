@@ -1,7 +1,9 @@
 package com.example.studyplatform.config;
 
+import com.example.studyplatform.config.handler.StompHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -11,6 +13,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker // 웹 소켓을 사용함
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    private final StompHandler stompHandler;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -27,10 +31,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 //                .withSockJS(); // 웹 소켓 사용
     }
 
-// TODO : StompHandler 작업 후 추가 해야하는 부분
-//    @Override
-//    public void configureClientInboundChannel (ChannelRegistration registration){
-//        registration.interceptors(stompHandler);
-//    }
+    @Override
+    public void configureClientInboundChannel (ChannelRegistration registration){
+        registration.interceptors(stompHandler);
+    }
 
 }
