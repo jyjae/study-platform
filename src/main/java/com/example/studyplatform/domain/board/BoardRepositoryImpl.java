@@ -14,6 +14,7 @@ import com.example.studyplatform.dto.board.BoardProjectDto;
 import com.example.studyplatform.dto.board.BoardStudyDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
         QUser user = QUser.user;
 
         // 유저의 스크랩 게시글 최신순 가져오기
-        JPAQuery<Board> query = jpaQueryFactory
+        JPQLQuery<Board> query = jpaQueryFactory
                 .select(board)
                 .from(user)
                 .leftJoin(user.scrapBoards, board)
