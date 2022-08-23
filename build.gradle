@@ -61,6 +61,9 @@ dependencies {
 	// redis를 JPA Repository를 이용하듯 인터페이스를 제공하는 모듈
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'it.ozimov:embedded-redis:0.7.2'
+
+	// jackson 추가
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 }
 
 tasks.named('test') {

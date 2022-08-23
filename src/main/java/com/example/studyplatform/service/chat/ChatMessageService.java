@@ -98,18 +98,20 @@ public class ChatMessageService {
     }
 
     // 1:1 채팅, 그룹 채팅 알람 전송
-    public void sendChatAlarm(ChatMessageRequest chatMessageRequest, User user) {
+    public void sendChatAlarm(ChatMessageRequest chatMessageRequest) {
         Set<Long> otherUserIds = chatMessageRequest.getOtherUserIds();
+        User user = userRepository.findByIdAndStatus(chatMessageRequest.getUserId(), Status.ACTIVE).orElseThrow(UserNotFoundException::new);
         otherUserIds.forEach(otherUserId -> messageIfExistsOtherUser(chatMessageRequest, user, otherUserId));
     }
 
     private void messageIfExistsOtherUser(ChatMessageRequest req, User user, Long otherUserId) {
         // 채팅방에 받는 사람이 존재하지 않는다면
-        if (!redisRepository.existUserRoomInfo(req.getRoomId(), otherUserId)) {
+        if (!redisRepository.existChatRoomUserInfo(otherUserId) || !redisRepository.getUserEnterRoomId(otherUserId).equals(req.getRoomId())) {
             User otherUser = userRepository.findByIdAndStatus(otherUserId, Status.ACTIVE).orElseThrow(UserNotFoundException::new);
             String topic = channelTopic.getTopic();
 
             // 그룹, 1:1채팅에 따라 제목 변경
+            System.out.println(user.getNickname());
             String title = (req.getType() == ChatMessageRequest.MessageType.GROUP_TALK
                     ? req.getRoomTitle() + "에서" : "") + user.getNickname() + "님이 메시지를 보냈습니다.";
 

@@ -5,10 +5,7 @@ import com.example.studyplatform.service.alarm.AlarmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/alarms")
@@ -16,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AlarmController {
     private final AlarmService alarmService;
 
-    @GetMapping("/{cursorId}")
+    @GetMapping(value = {"/{cursorId}", ""})
     public Response readAllByCursorId(
-            @PathVariable Long cursorId,
+            @PathVariable(required = false) Long cursorId,
             @PageableDefault(size = 8) Pageable pageable
     ) {
         return Response.success(alarmService.readAllByCursorId(cursorId, pageable));
@@ -29,5 +26,13 @@ public class AlarmController {
             @PathVariable Integer size
     ) {
         return Response.success(alarmService.readAllUnReadAlarms(size));
+    }
+
+    @PatchMapping("/{id}/read")
+    public Response readAlarm(
+            @PathVariable Long id
+    ) {
+        alarmService.readAlarm(id);
+        return Response.success();
     }
 }
