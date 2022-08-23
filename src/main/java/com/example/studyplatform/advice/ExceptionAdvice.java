@@ -124,4 +124,10 @@ public class ExceptionAdvice {
     public Response projectOrganizationNotFoundException(ProjectOrganizationNotFoundException e) {
         return Response.failure(PROJECT_ORGANIZATION_NOT_FOUND.getCode(), PROJECT_ORGANIZATION_NOT_FOUND.getMessage());
     }
+
+    @ExceptionHandler(AlarmNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response alarmNotFoundException(AlarmNotFoundException e) {
+        return Response.failure(ALARM_NOT_FOUND.getCode(), ALARM_NOT_FOUND.getMessage());
+    }
 }

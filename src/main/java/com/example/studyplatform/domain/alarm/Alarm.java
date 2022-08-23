@@ -30,6 +30,10 @@ public class Alarm extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    public void read() {
+        this.isRead = true;
+    }
+
     @Builder
     public Alarm(String title, String url, User user) {
         this.title = title;
