@@ -48,7 +48,7 @@ public class RedisSubscriber implements MessageListener {
 
             } else {   // 만약 AlarmRequest 클래스로 넘어왔다면
                 AlarmRequest alarmRequest = objectMapper.readValue(publishMessage, AlarmRequest.class);
-                messagingTemplate.convertAndSend("/sub/chat/room/" + alarmRequest.getOtherUserId(), AlarmResponse.toDto(alarmRequest));
+                messagingTemplate.convertAndSend("/sub/user/" + alarmRequest.getOtherUserId(), AlarmResponse.toDto(alarmRequest));
             }
 
         } catch (Exception e) {
