@@ -64,6 +64,9 @@ dependencies {
 
 	// jackson 추가
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+	// aws 추가
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('test') {
