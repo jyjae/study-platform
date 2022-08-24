@@ -28,6 +28,7 @@ public class ChatMessageRequest implements Serializable {
     private String message; // 메시지
     private Long userId;
     private int count;
+    private Boolean isFile;
 
     // 알림용 메세지 생성자 (근데 여기에 꼭 필요할까..?)
     public ChatMessageRequest(ChatMessageRequest chatMessageDto, int count) {
