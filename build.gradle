@@ -67,6 +67,9 @@ dependencies {
 
 	// aws 추가
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	// oauth 추가
+	implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client'
 }
 
 tasks.named('test') {

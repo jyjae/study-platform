@@ -1,6 +1,7 @@
 package com.example.studyplatform.domain.user;
 
 import com.example.studyplatform.constant.Status;
+import com.example.studyplatform.constant.oauth.ProviderName;
 import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.board.Board;
 import com.example.studyplatform.domain.career.Career;
@@ -39,6 +40,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     private String password;
 
     private String profileImg;
+
+    @Enumerated(EnumType.STRING)
+    private ProviderName providerName;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
@@ -103,7 +107,8 @@ public class User extends BaseTimeEntity implements UserDetails {
             String email,
             String password,
             String profileImg,
-            List<String> roles
+            List<String> roles,
+            ProviderName providerName
     ) {
         this.username = username;
         this.nickname = nickname;
@@ -112,6 +117,7 @@ public class User extends BaseTimeEntity implements UserDetails {
         this.profileImg = profileImg;
         this.status = Status.ACTIVE;
         this.roles = roles;
+        this.providerName = providerName;
     }
 
     @Override
