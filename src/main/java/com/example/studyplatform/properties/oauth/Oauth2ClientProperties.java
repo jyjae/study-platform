@@ -3,12 +3,14 @@ package com.example.studyplatform.properties.oauth;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties.*;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 @ConfigurationProperties(prefix = "spring.security.oauth2.client.registration")
 public class Oauth2ClientProperties implements InitializingBean {
     private final Map<String, Provider> provider = new HashMap<>();
