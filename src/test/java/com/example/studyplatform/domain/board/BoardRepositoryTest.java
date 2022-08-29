@@ -48,18 +48,18 @@ class BoardRepositoryTest {
         assertThat(boardRepository.count()).isEqualTo(2);
     }
 
-    @Test
-    void dTypeTest() {
-        // given
-        User user = userRepository.save(createUser());
-        StudyBoard studyBoard = studyBoardRepository.save(createStudyBoard(user));
-        ProjectPost projectPost = projectPostRepository.save(createProjectPost(user));
-        emClear();
-
-        // when, then
-        assertThat(studyBoard.getDtype()).isEqualTo("STUDY");
-        assertThat(projectPost.getDtype()).isEqualTo("PROJECT");
-    }
+//    @Test
+//    void dTypeTest() {
+//        // given
+//        User user = userRepository.save(createUser());
+//        StudyBoard studyBoard = studyBoardRepository.save(createStudyBoard(user));
+//        ProjectPost projectPost = projectPostRepository.save(createProjectPost(user));
+//        emClear();
+//
+//        // when, then
+//        assertThat(studyBoard.getDtype()).isEqualTo("STUDY");
+//        assertThat(projectPost.getDtype()).isEqualTo("PROJECT");
+//    }
 
     void emClear(){
         em.flush();
