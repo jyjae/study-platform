@@ -1,31 +1,3 @@
 spring:
   profiles:
-    active: local
-
-  security:
-    oauth2:
-      client:
-        registration:
-          kakao:
-            client-id: client id 값
-            client-secret: client secret 값
-            client-name: Kakao
-            authorization-grant-type: authorization_code
-            redirect-uri: callback uri
-          github:
-            client-id: client id 값
-            client-secret: client secret 값
-            client-name: Github
-            authorization-grant-type: authorization_code
-            redirect-uri: callback uri
-        provider:
-          kakao:
-            authorization-uri: https://kauth.kakao.com/oauth/authorize
-            token_uri: https://kauth.kakao.com/oauth/token
-            user-info-uri: https://kapi.kakao.com/v2/user/me
-            user_name_attribute: id
-          github:
-            authorization-uri: https://github.com/login/oauth/authorize
-            token_uri: https://github.com/login/oauth/access_token
-            user-info-uri: https://api.github.com/user
-            user_name_attribute: id
+    active: dev

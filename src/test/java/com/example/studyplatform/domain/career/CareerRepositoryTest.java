@@ -1,13 +1,16 @@
 package com.example.studyplatform.domain.career;
 
+import com.example.studyplatform.config.TestConfig;
 import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.techStack.TechStack;
 import com.example.studyplatform.domain.techStack.TechStackRepository;
 import com.example.studyplatform.exception.CareerNotFoundException;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
+@Import(TestConfig.class)
 class CareerRepositoryTest {
     @Autowired
     private TechStackRepository techStackRepository;
