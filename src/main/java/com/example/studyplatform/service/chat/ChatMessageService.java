@@ -68,14 +68,14 @@ public class ChatMessageService {
         chatMessageRequest.setNickName(user.getNickname());
         chatMessageRequest.setUserId(user.getId());
 
-        if (chatMessageRequest.getType() == ChatMessageRequest.MessageType.TALK) {
-            // 일대일 채팅일 경우
-            redisTemplate.convertAndSend(topic, chatMessageRequest);
-            updateUnReadMessageCount(chatMessageRequest);
-        } else {
+        if (chatMessageRequest.getType() == ChatMessageRequest.MessageType.GROUP_TALK) {
             // 그륩 채팅일 경우
             redisTemplate.convertAndSend(topic, chatMessageRequest);
             redisTemplate.opsForHash();
+        } else {
+            // 일대일 채팅 이면서 안읽은 메세지 업데이트
+            redisTemplate.convertAndSend(topic, chatMessageRequest);
+            updateUnReadMessageCount(chatMessageRequest);
         }
     }
 
