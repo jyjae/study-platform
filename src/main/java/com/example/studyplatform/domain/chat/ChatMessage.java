@@ -35,5 +35,6 @@ public class ChatMessage extends BaseTimeEntity {
         this.user = user;
         this.chatRoom = chatRoom;
         this.message = message;
+        this.status = Status.ACTIVE;
     }
 }
