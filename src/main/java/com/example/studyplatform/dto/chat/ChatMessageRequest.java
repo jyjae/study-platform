@@ -30,11 +30,11 @@ public class ChatMessageRequest implements Serializable {
     private int count;
     private Boolean isFile;
 
-    // 알림용 메세지 생성자 (근데 여기에 꼭 필요할까..?)
+    // 안 읽은 메세지 처리를 위한 생성자
     public ChatMessageRequest(ChatMessageRequest chatMessageDto, int count) {
         this.type = MessageType.UNREAD_MESSAGE_COUNT_ALARM; // 메시지 타입
         this.roomId = chatMessageDto.roomId; // 방 이름
-        this.otherUserIds = chatMessageDto.otherUserIds; // 상대방 prvateKey
+        this.otherUserIds = chatMessageDto.otherUserIds; // 상대방 privateKey
         this.count = count; //안읽은 메세지 개수
     }
 }
