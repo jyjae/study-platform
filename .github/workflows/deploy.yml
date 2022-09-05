@@ -7,7 +7,7 @@ on:
   workflow_dispatch: # (2) 수동 실행
 
 env:
-  S3_BUCKEZT_NAME: study-platform-jar-bucket
+  S3_BUCKET_NAME: study-platform-jar-bucket
   PROJECT_NAME: study-platform
 
 jobs:
