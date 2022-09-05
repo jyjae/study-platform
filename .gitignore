@@ -30,6 +30,8 @@ application-dev.yml
 # application-local.yml
 **/src/main/**/config/secret/
 
+secrets.tar
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
