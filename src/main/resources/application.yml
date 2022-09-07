@@ -29,3 +29,6 @@ spring:
             token_uri: https://github.com/login/oauth/access_token
             user-info-uri: https://api.github.com/user
             user_name_attribute: id
+
+logging-module:
+  version: 0.0.1
