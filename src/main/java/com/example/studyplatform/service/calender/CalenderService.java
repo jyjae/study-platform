@@ -10,6 +10,7 @@ import com.example.studyplatform.domain.user.User;
 import com.example.studyplatform.dto.calender.CalenderResponse;
 import com.example.studyplatform.dto.calender.PostCalenderRequest;
 import com.example.studyplatform.dto.calender.PutCalenderRequest;
+import com.example.studyplatform.dto.calender.SimpleCalenderResponse;
 import com.example.studyplatform.dto.response.Response;
 import com.example.studyplatform.exception.CalenderNotFoundException;
 import com.example.studyplatform.exception.StudyNotFoundException;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -27,6 +30,23 @@ public class CalenderService {
     private final CalenderRepository calenderRepository;
     private final StudyRepository studyRepository;
     private final AttendRepository attendRepository;
+
+    public List<SimpleCalenderResponse> list(Long studyId){
+        Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
+        List<Calender> calenders = calenderRepository.findByStudy_Id(study.getId());
+
+        return calenders.stream().map(calender -> calender.simpleResult()).collect(Collectors.toList());
+    }
+
+    public CalenderResponse get(Long calenderId){
+        Calender calender = calenderRepository.findById(calenderId).orElseThrow(CalenderNotFoundException::new);
+
+        // 참석자 ID 가져오기
+        List<Attend> attends = attendRepository.findByCalenderId(calender.getId());
+        Set<Long> userIds = attends.stream().map(i -> i.getUserId()).collect(Collectors.toSet());
+
+        return calender.result(userIds);
+    }
 
     @Transactional
     public CalenderResponse create(Long studyId, User user, PostCalenderRequest req) {
