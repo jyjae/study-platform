@@ -4,6 +4,7 @@ import com.example.studyplatform.constant.CareerStatus;
 import com.example.studyplatform.domain.board.Board;
 import com.example.studyplatform.domain.project.projectPost.ProjectPost;
 import com.example.studyplatform.dto.studyTechStack.StudyTechStackDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "게시글 DTO")
 public class BoardDto {
     protected Long id;
 
