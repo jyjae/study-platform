@@ -16,6 +16,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Tag(name = "study-target-controller", description = "스터디 목표 API")
 @RestController
 @RequiredArgsConstructor
@@ -59,7 +61,7 @@ public class StudyTargetController {
     @PostMapping("/{studyId}")
     public Response create(
             @PathVariable Long studyId,
-            @RequestBody PostStudyTargetRequest req) {
+            @RequestBody @Valid PostStudyTargetRequest req) {
         return Response.success(studyTargetService.create(studyId, req));
     }
 
@@ -76,7 +78,7 @@ public class StudyTargetController {
     @PatchMapping("/{studyTargetId}")
     public Response update(
             @PathVariable Long studyTargetId,
-            @RequestBody PutStudyTargetRequest req
+            @RequestBody @Valid PutStudyTargetRequest req
     ) {
         return Response.success(studyTargetService.update(studyTargetId, req));
     }

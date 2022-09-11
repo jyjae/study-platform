@@ -1,6 +1,7 @@
 package com.example.studyplatform.dto.calender;
 
 import com.example.studyplatform.constant.Status;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "캘린더 응답 DTO")
 public class CalenderResponse {
     private Long id;
     private Long studyId;

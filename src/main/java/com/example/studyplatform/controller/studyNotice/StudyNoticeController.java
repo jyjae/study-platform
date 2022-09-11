@@ -18,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Tag(name = "study-notice-controller", description = "스터디 공지 API")
 @RestController
 @RequiredArgsConstructor
@@ -64,7 +66,7 @@ public class StudyNoticeController {
     public Response create(
             @PathVariable Long studyId,
             @AuthenticationPrincipal User user,
-            @RequestBody PostStudyNoticeRequest req
+            @RequestBody @Valid PostStudyNoticeRequest req
     ) {
         return Response.success(studyNoticeService.create(studyId, user, req));
     }
@@ -86,7 +88,7 @@ public class StudyNoticeController {
     public Response update(
             @PathVariable Long studyNoticeId,
             @AuthenticationPrincipal User user,
-            @RequestBody PutStudyNoticeRequest req
+            @RequestBody @Valid PutStudyNoticeRequest req
     ) {
         return Response.success(studyNoticeService.update(studyNoticeId, req, user));
     }

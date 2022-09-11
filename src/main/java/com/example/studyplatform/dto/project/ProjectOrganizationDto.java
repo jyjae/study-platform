@@ -4,6 +4,7 @@ import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.constant.CareerStatus;
 import com.example.studyplatform.domain.project.projectOrganization.ProjectOrganization;
 import com.example.studyplatform.dto.techStack.TechStackDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "프로젝트 모집 응답 DTO")
 public class ProjectOrganizationDto {
     private Long id;
 

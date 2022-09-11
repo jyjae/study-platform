@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Tag(name = "study-controller", description = "스터디 API")
 @RestController
 @RequestMapping("/api/study")
@@ -89,7 +91,7 @@ public class StudyController {
     )
     @PostMapping()
     public Response create(
-            @RequestBody PostStudyRequest req,
+            @RequestBody @Valid PostStudyRequest req,
             @AuthenticationPrincipal User user
     ) {
         return Response.success(studyService.create(req, user));

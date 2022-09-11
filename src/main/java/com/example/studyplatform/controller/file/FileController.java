@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 @Tag(name = "file-controller", description = "파일 업로드 API")
@@ -30,7 +31,7 @@ public class FileController {
             }
     )
     @PostMapping("/api/files/upload")
-    public Response uploadFile(@ModelAttribute FileUploadRequest req) throws IOException {
+    public Response uploadFile(@ModelAttribute @Valid FileUploadRequest req) throws IOException {
         return Response.success(s3FileService.upload(req));
     }
 

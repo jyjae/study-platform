@@ -1,5 +1,6 @@
 package com.example.studyplatform.dto.studyNotice;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "스터디 공지 응답 DTO")
 public class StudyNoticeResponse {
     private Long id;
     private Long study_id;

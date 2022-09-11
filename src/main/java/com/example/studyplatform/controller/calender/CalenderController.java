@@ -19,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Tag(name = "calender-controller", description = "캘린더 API")
 @RestController
 @RequiredArgsConstructor
@@ -79,7 +81,7 @@ public class CalenderController {
     @PostMapping("/{studyId}")
     public Response create(
             @PathVariable Long studyId,
-            @RequestBody PostCalenderRequest req,
+            @RequestBody @Valid PostCalenderRequest req,
             @AuthenticationPrincipal User user
     ) {
         return Response.success(calenderService.create(studyId, user, req));
@@ -99,7 +101,7 @@ public class CalenderController {
     @PutMapping("/{calenderId}")
     public Response update(
             @PathVariable Long calenderId,
-            @RequestBody PutCalenderRequest req,
+            @RequestBody @Valid PutCalenderRequest req,
             @AuthenticationPrincipal User user
     ) {
         return Response.success(calenderService.update(calenderId, user, req));

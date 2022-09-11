@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Tag(name = "project-resume-controller", description = "프로젝트 신청서 API")
 @RequiredArgsConstructor
 @RequestMapping("/api/project-resume")
@@ -36,7 +38,7 @@ public class ProjectResumeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Response create(
-            ProjectResumeCreateRequest req,
+            @RequestBody @Valid ProjectResumeCreateRequest req,
             @AuthenticationPrincipal User user
     ) {
         projectResumeService.create(req, user);
@@ -73,7 +75,7 @@ public class ProjectResumeController {
     @ResponseStatus(HttpStatus.OK)
     public Response approvalResume(
             @PathVariable("id") Long resumeId,
-            @RequestBody ProjectResumeApprovalRequest req
+            @RequestBody @Valid ProjectResumeApprovalRequest req
     ) {
         projectResumeService.approvalResume(resumeId, req);
         return Response.success();
@@ -112,7 +114,7 @@ public class ProjectResumeController {
     @ResponseStatus(HttpStatus.OK)
     public Response deleteAppliedResume(
             @PathVariable("id") Long resumeId,
-            @RequestBody ProjectResumeDeleteRequest req
+            @RequestBody @Valid ProjectResumeDeleteRequest req
     ) {
         projectResumeService.deleteAppliedResume(resumeId, req);
         return Response.success();

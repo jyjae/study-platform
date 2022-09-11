@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Tag(name = "project-post-controller", description = "프로젝트 게시물 API")
 @RequiredArgsConstructor
 @RequestMapping("/api/project-post")
@@ -38,7 +40,7 @@ public class ProjectPostController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Response create(
-            @RequestBody ProjectPostCreateRequest req,
+            @RequestBody @Valid ProjectPostCreateRequest req,
             @AuthenticationPrincipal User user
     ) {
         projectPostService.create(req, user);
@@ -92,7 +94,7 @@ public class ProjectPostController {
     @ResponseStatus(HttpStatus.OK)
     public Response update(
             @PathVariable Long id,
-            @RequestBody ProjectPostUpdateRequest req) {
+            @RequestBody @Valid ProjectPostUpdateRequest req) {
         projectPostService.update(id, req);
         return Response.success();
     }
