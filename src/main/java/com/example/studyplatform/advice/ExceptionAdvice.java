@@ -3,6 +3,7 @@ package com.example.studyplatform.advice;
 import com.example.studyplatform.dto.response.Response;
 import com.example.studyplatform.exception.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -11,6 +12,11 @@ import static com.example.studyplatform.advice.ErrorCode.*;
 
 @RestControllerAdvice
 public class ExceptionAdvice {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response chatRoomCannotMakeRoomAloneException(MethodArgumentNotValidException e) {
+        return Response.failure(-3000, e.getMessage());
+    }
     @ExceptionHandler(ChatRoomCannotMakeRoomAloneException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Response chatRoomCannotMakeRoomAloneException(ChatRoomCannotMakeRoomAloneException e) {
