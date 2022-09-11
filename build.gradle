@@ -64,7 +64,6 @@ dependencies {
 	// Openvidu 의존성
 	implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.18.0'
 
-
 	//querydsl 추가
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
@@ -81,6 +80,15 @@ dependencies {
 
 	// oauth 추가
 	implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client'
+
+	// swagger 설정
+	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.11'
+	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-security
+	// Spring Security 무시하기위한 설정 (ex : @AuthenticationPrincipal)
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-security', version: '1.6.11'
+
+
 }
 
 tasks.named('test') {
