@@ -86,8 +86,6 @@ public class KakaoService {
     }
 
     public Map<String, Object> getUserInfo(String accessToken){
-        String userInfoUri = properties.getProvider().get("kakao").getUserInfoUri();
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -97,7 +95,7 @@ public class KakaoService {
         ResponseEntity<Map> response = null;
 
         response = restTemplate.postForEntity(
-            userInfoUri,
+            "https://kapi.kakao.com/v2/user/me",
             kakaoRequest,
             Map.class
         );
@@ -107,32 +105,22 @@ public class KakaoService {
     }
 
     public String getKakaoAccessToken(String code){
-        //리팩토링 필요
-        String authorizationCode = properties.getRegistration()
-                .get("kakao").getAuthorizationGrantType();
-        String clientId = properties.getRegistration()
-                .get("kakao").getClientId();
-        String redirectUri = properties.getRegistration()
-                .get("kakao")
-                .getRedirectUri();
-        String tokenUri = properties.getProvider()
-                .get("kakao").getTokenUri();
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
         //HttpBody 오브젝트 생성
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", authorizationCode);
-        params.add("client_id", clientId);
-        params.add("redirect_uri",redirectUri);
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", "3ea0545f0a688aa3af8a89a07c6aeede");
+        params.add("redirect_uri","http://54.180.148.170:8000/Redirect");
         params.add("code", code);
 
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
 
         // 실제 요청
         ResponseEntity<Map> response =restTemplate.postForEntity(
-                tokenUri,
+                "https://kauth.kakao.com/oauth/token",
                 kakaoTokenRequest,
                 Map.class
         );

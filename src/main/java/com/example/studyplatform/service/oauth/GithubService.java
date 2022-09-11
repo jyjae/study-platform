@@ -49,8 +49,6 @@ public class GithubService {
     }
 
     public Map<String, Object> getUserInfo(String accessToken){
-        String userInfoUri = properties.getProvider().get("github").getUserInfoUri();
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "token " + accessToken);
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -60,7 +58,7 @@ public class GithubService {
         ResponseEntity<Map> response = null;
 
         response = restTemplate.postForEntity(
-                userInfoUri,
+                "https://api.github.com/user",
                 githubRequest,
                 Map.class
         );
@@ -106,32 +104,21 @@ public class GithubService {
 
 
     public String getGithubAccessToken(String code) {
-        String clientId = properties.getRegistration()
-                .get("github").getClientId();
-        String redirectUri = properties.getRegistration()
-                .get("github")
-                .getRedirectUri();
-        String tokenUri = properties.getProvider()
-                .get("github").getTokenUri();
-        String clientSecret = properties.getRegistration()
-                .get("github")
-                .getClientSecret();
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
         //HttpBody 오브젝트 생성
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("client_id", clientId);
-        params.add("client_secret", clientSecret);
-        params.add("redirect_uri",redirectUri);
+        params.add("client_id", "399d0fa02a0200f5b814");
+        params.add("client_secret", "76564538f4c5bf5fce57e00f0e99d100e32371b5");
+        params.add("redirect_uri","http://54.180.148.170:8000/Redirect");
         params.add("code", code);
 
         HttpEntity<MultiValueMap<String, String>> githubTokenRequest = new HttpEntity<>(params, headers);
 
         // 실제 요청
         ResponseEntity<Map> response =restTemplate.postForEntity(
-                tokenUri,
+                "https://github.com/login/oauth/access_token",
                 githubTokenRequest,
                 Map.class
         );
