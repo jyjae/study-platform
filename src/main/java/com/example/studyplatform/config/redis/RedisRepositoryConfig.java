@@ -8,7 +8,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
-@Profile("dev") // dev 변경 예정
+@Profile("local") // dev 변경 예정
 @Configuration
 @EnableRedisRepositories
 public class RedisRepositoryConfig {

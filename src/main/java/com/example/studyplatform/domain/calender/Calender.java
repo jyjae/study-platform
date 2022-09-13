@@ -5,6 +5,7 @@ import com.example.studyplatform.domain.BaseTimeEntity;
 import com.example.studyplatform.domain.study.Study;
 import com.example.studyplatform.dto.calender.CalenderResponse;
 import com.example.studyplatform.dto.calender.PutCalenderRequest;
+import com.example.studyplatform.dto.calender.SimpleCalenderResponse;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -86,6 +87,15 @@ public class Calender extends BaseTimeEntity {
                 isAlarm,
                 isOnline,
                 status
+        );
+    }
+
+    public SimpleCalenderResponse simpleResult(){
+        return SimpleCalenderResponse.of(
+                id,
+                userId,
+                calenderTitle,
+                calenderContents
         );
     }
 

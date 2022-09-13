@@ -1,5 +1,6 @@
 package com.example.studyplatform.dto.project;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "프로젝트 게시물 수정 DTO")
 public class ProjectPostUpdateRequest{
     private String title;
 

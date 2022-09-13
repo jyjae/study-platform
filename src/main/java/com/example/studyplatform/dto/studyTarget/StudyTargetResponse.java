@@ -1,5 +1,6 @@
 package com.example.studyplatform.dto.studyTarget;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "스터디 목표 응답 DTO")
 public class StudyTargetResponse {
     private Long id;
     private String studyTargetTitle;

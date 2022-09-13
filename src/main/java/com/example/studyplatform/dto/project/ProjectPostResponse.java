@@ -2,17 +2,18 @@ package com.example.studyplatform.dto.project;
 
 import com.example.studyplatform.constant.Status;
 import com.example.studyplatform.domain.project.projectPost.ProjectPost;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "프로젝트 게시물 응답 DTO")
 public class ProjectPostResponse {
     private Long id;
 
