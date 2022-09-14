@@ -25,8 +25,13 @@
 | Nginx   |  ...                |   웹서버     |
 | GithubAction   | ...            | CI/CD      |
 | Docker   | ...            | ...      |
+| Docker-compose   | ...            | ...      |
 | Openvidu-Server  |  2.18.0           | WebRTC       |
 ---  
 ### 서비스 아키텍처
 ![서비스 아키텍처](https://user-images.githubusercontent.com/80299170/190058923-c197377a-a728-4971-8f56-930750177443.png)
+
+---
+### ERD
+![ERD2](https://user-images.githubusercontent.com/80299170/190061526-069dbf27-8f4a-4e64-ba77-b6be820cf98b.png)
 
