@@ -10,7 +10,7 @@
 | [오진서](https://github.com/ohjinseo)|BE / Spring [팀장]|
 | [정연재](https://github.com/jyjae)|BE / Spring|
 | [민진기](https://github.com/Dmin3)|BE / Spring|
-| [강전호](https://github.com/cbjjzzang)|FE / React|
+| [강전호](https://github.com/zzho-o)|FE / React|
 
 ---
 
