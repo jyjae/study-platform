@@ -14,7 +14,7 @@
 
 ---
 ### 시연영상
-[![Video Label](http://img.youtube.com/vi/uLR1RNqJ1Mw/0.jpg)](https://youtu.be/uLR1RNqJ1Mw?t=0s)
+[![Video Label](http://img.youtube.com/vi/NrwhZoxgbYQ/0.jpg)](https://youtu.be/NrwhZoxgbYQ)
 
 ---
 ### 🖥 Backend 개발 환경
