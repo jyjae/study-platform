@@ -13,7 +13,7 @@
 | [강전호](https://github.com/zzho-o)|FE / React|
 
 ---
-### 시연영상 ###
+### 📹 시연영상 ###
 [![Video Label](http://img.youtube.com/vi/NrwhZoxgbYQ/0.jpg)](https://youtu.be/NrwhZoxgbYQ)
 ---
 
