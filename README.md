@@ -13,7 +13,10 @@
 | [강전호](https://github.com/zzho-o)|FE / React|
 
 ---
+### 시연영상
+[![Video Label](http://img.youtube.com/vi/uLR1RNqJ1Mw/0.jpg)](https://youtu.be/uLR1RNqJ1Mw?t=0s)
 
+---
 ### 🖥 Backend 개발 환경
 | 기술스택/툴 | 버전 | 설명 |
 | ------ | ----------- | ----------- |
